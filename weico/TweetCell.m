@@ -91,6 +91,7 @@
 {
     NSLog(@"repost!!");
     //Repost *repost = [[Repost alloc]init];
+    
 }
 -(void)commentAction:(UIButton *)btn
 {
