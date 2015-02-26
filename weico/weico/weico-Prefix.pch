@@ -31,4 +31,5 @@
 #define kURLRepost      @"https://api.weibo.com/2/statuses/repost.json"
 
 #define kURLCheckToken  @"https://api.weibo.com/oauth2/get_token_info"
+#define kURLShowMe      @"https://api.weibo.com/2/users/show.json"
 #endif

@@ -8,8 +8,9 @@
 
 #import "MyTabBarViewController.h"
 #import "HomeViewController.h"
-#import "MessageViewController.h"
-#import "SearchViewController.h"
+#import "AtMeViewController.h"
+#import "CommentMeViewController.h"
+#import "FavListViewController.h"
 #import "MeViewController.h"
 
 @interface MyTabBarViewController ()
@@ -36,21 +37,26 @@
 }
 -(void)createUI
 {
-    HomeViewController *view1 = [[HomeViewController alloc]init];
+    
+    
+    FavListViewController *view1 = [[FavListViewController alloc]init];
     UINavigationController *nvc1 = [[UINavigationController alloc]initWithRootViewController:view1];
     
-    MessageViewController *view2 = [[MessageViewController alloc]init];
+    CommentMeViewController *view2 = [[CommentMeViewController alloc]init];
     UINavigationController *nvc2 = [[UINavigationController alloc]initWithRootViewController:view2];
     
-    SearchViewController *view3 = [[SearchViewController alloc]init];
+    HomeViewController *view3 = [[HomeViewController alloc]init];
     UINavigationController *nvc3 = [[UINavigationController alloc]initWithRootViewController:view3];
     
-    MeViewController *view4 = [[MeViewController alloc]init];
+    AtMeViewController *view4 = [[AtMeViewController alloc]init];
     UINavigationController *nvc4 = [[UINavigationController alloc]initWithRootViewController:view4];
+    
+    MeViewController *view5 = [[MeViewController alloc]init];
+    UINavigationController *nvc5 = [[UINavigationController alloc]initWithRootViewController:view5];
     
 
     
-    NSArray *array = [NSArray arrayWithObjects:nvc1,nvc2,nvc3,nvc4, nil];
+    NSArray *array = [NSArray arrayWithObjects:nvc1,nvc2,nvc3,nvc4,nvc5, nil];
     self.viewControllers = array;
     
     
@@ -70,7 +76,7 @@
 //    
 //    NSArray *selArr = [NSArray arrayWithObjects:@"home_tab_icon_1_selected",@"home_tab_icon_2_selected",@"home_tab_icon_3_selected",@"home_tab_icon_4_selected", nil];
     
-    NSArray *norArr = [NSArray arrayWithObjects:@"tab_favlist_selected",@"tab_user_comments_selected",@"tab_user_home_groups_selected",@"tab_user_at_selected", nil];
+    NSArray *norArr = [NSArray arrayWithObjects:@"tab_favlist_selected",@"tab_user_comments_selected",@"tab_user_home_groups_selected",@"tab_user_at_selected",@"", nil];
     
     //NSArray *selArr = [NSArray arrayWithObjects:@"home_tab_icon_1_selected",@"home_tab_icon_2_selected",@"home_tab_icon_3_selected",@"home_tab_icon_4_selected", nil];
     
@@ -82,7 +88,7 @@
         [btn setImage:[UIImage imageNamed:norArr[i]] forState:UIControlStateNormal];
         //[btn setImage:[UIImage imageNamed:selArr[i]] forState:UIControlStateSelected];
         btn.tag = 100+i;
-        if (i==0)
+        if (i==2)
         {
             btn.selected = YES;
         }
@@ -95,7 +101,7 @@
 -(void)btnClickAction:(UIButton *)btn
 {
     //NSLog(@"btn.tag:%d",btn.tag);
-    for (int i=0; i<4; i++)
+    for (int i=0; i<5; i++)
     {
         UIButton *mybtn = (UIButton *)[self.view viewWithTag:100+i];
         mybtn.selected = NO;

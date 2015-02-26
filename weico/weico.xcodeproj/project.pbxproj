@@ -90,6 +90,10 @@
 		BCFD07D11A9F3C8100C21936 /* tab_user_home_special_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFD07BF1A9F3C8100C21936 /* tab_user_home_special_selected@3x.png */; };
 		BCFD07D21A9F3C8100C21936 /* tab_user_message_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFD07C01A9F3C8100C21936 /* tab_user_message_selected@2x.png */; };
 		BCFD07D31A9F3C8100C21936 /* tab_user_message_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFD07C11A9F3C8100C21936 /* tab_user_message_selected@3x.png */; };
+		BCFD07E71A9F563B00C21936 /* AtMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFD07E61A9F563B00C21936 /* AtMeViewController.m */; };
+		BCFD07EA1A9F564400C21936 /* CommentMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFD07E91A9F564400C21936 /* CommentMeViewController.m */; };
+		BCFD07ED1A9F564C00C21936 /* FavListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFD07EC1A9F564C00C21936 /* FavListViewController.m */; };
+		BCFD07F71A9F5AA000C21936 /* corner_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFD07F61A9F5AA000C21936 /* corner_circle@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -244,6 +248,13 @@
 		BCFD07BF1A9F3C8100C21936 /* tab_user_home_special_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user_home_special_selected@3x.png"; sourceTree = "<group>"; };
 		BCFD07C01A9F3C8100C21936 /* tab_user_message_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user_message_selected@2x.png"; sourceTree = "<group>"; };
 		BCFD07C11A9F3C8100C21936 /* tab_user_message_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user_message_selected@3x.png"; sourceTree = "<group>"; };
+		BCFD07E51A9F563B00C21936 /* AtMeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtMeViewController.h; sourceTree = "<group>"; };
+		BCFD07E61A9F563B00C21936 /* AtMeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AtMeViewController.m; sourceTree = "<group>"; };
+		BCFD07E81A9F564400C21936 /* CommentMeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentMeViewController.h; sourceTree = "<group>"; };
+		BCFD07E91A9F564400C21936 /* CommentMeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentMeViewController.m; sourceTree = "<group>"; };
+		BCFD07EB1A9F564C00C21936 /* FavListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavListViewController.h; sourceTree = "<group>"; };
+		BCFD07EC1A9F564C00C21936 /* FavListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavListViewController.m; sourceTree = "<group>"; };
+		BCFD07F61A9F5AA000C21936 /* corner_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "corner_circle@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -527,6 +538,12 @@
 				8729E78A1A99CD1C00D0DE26 /* SearchViewController.m */,
 				8729E7871A99CD1C00D0DE26 /* MeViewController.h */,
 				8729E7881A99CD1C00D0DE26 /* MeViewController.m */,
+				BCFD07E51A9F563B00C21936 /* AtMeViewController.h */,
+				BCFD07E61A9F563B00C21936 /* AtMeViewController.m */,
+				BCFD07E81A9F564400C21936 /* CommentMeViewController.h */,
+				BCFD07E91A9F564400C21936 /* CommentMeViewController.m */,
+				BCFD07EB1A9F564C00C21936 /* FavListViewController.h */,
+				BCFD07EC1A9F564C00C21936 /* FavListViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -575,6 +592,7 @@
 		BCFD07AF1A9F3C8100C21936 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				BCFD07F61A9F5AA000C21936 /* corner_circle@2x.png */,
 				BCFD07B01A9F3C8100C21936 /* tab_config@2x.png */,
 				BCFD07B11A9F3C8100C21936 /* tab_favlist_selected@2x.png */,
 				BCFD07B21A9F3C8100C21936 /* tab_favlist_selected@3x.png */,
@@ -685,6 +703,7 @@
 				BCFD07C61A9F3C8100C21936 /* tab_style@2x.png in Resources */,
 				8729E6EC1A99CCE400D0DE26 /* Icon.png in Resources */,
 				87CA5BCB1A99806100E1C3BA /* Images.xcassets in Resources */,
+				BCFD07F71A9F5AA000C21936 /* corner_circle@2x.png in Resources */,
 				BCFD07C71A9F3C8100C21936 /* tab_tail@2x.png in Resources */,
 				8729E7A61A99D8A100D0DE26 /* myTabBar.png in Resources */,
 				8729E6ED1A99CCE400D0DE26 /* Icon@2x.png in Resources */,
@@ -721,6 +740,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8729E7961A99CD1C00D0DE26 /* MeViewController.m in Sources */,
+				BCFD07ED1A9F564C00C21936 /* FavListViewController.m in Sources */,
 				BC29900D1A9F20F4009C67BE /* NetManager.m in Sources */,
 				8729E53C1A99CC9200D0DE26 /* AFSecurityPolicy.m in Sources */,
 				8729E5221A99CC7E00D0DE26 /* MJRefreshFooterView.m in Sources */,
@@ -736,6 +756,7 @@
 				8729E55D1A99CCC400D0DE26 /* MyTabBarViewController.m in Sources */,
 				8729E5541A99CC9E00D0DE26 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				8729E55A1A99CC9E00D0DE26 /* UIWebView+AFNetworking.m in Sources */,
+				BCFD07EA1A9F564400C21936 /* CommentMeViewController.m in Sources */,
 				BC298FC41A9EAC02009C67BE /* RepostViewController.m in Sources */,
 				8729E5381A99CC9200D0DE26 /* AFHTTPRequestOperation.m in Sources */,
 				8729E53A1A99CC9200D0DE26 /* AFHTTPSessionManager.m in Sources */,
@@ -747,6 +768,7 @@
 				8729E5391A99CC9200D0DE26 /* AFHTTPRequestOperationManager.m in Sources */,
 				8729E79A1A99CD1C00D0DE26 /* UpdateTweetVC.m in Sources */,
 				8729E5581A99CC9E00D0DE26 /* UIProgressView+AFNetworking.m in Sources */,
+				BCFD07E71A9F563B00C21936 /* AtMeViewController.m in Sources */,
 				8729E7931A99CD1C00D0DE26 /* HomeViewController.m in Sources */,
 				8729E5211A99CC7E00D0DE26 /* MJRefreshConst.m in Sources */,
 				BC29900A1A9F20AF009C67BE /* DeviceManager.m in Sources */,
