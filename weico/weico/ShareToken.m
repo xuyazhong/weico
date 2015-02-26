@@ -39,19 +39,30 @@
     [defaults setObject:dict forKey:@"userinfo"];
     [defaults synchronize];
 }
-+(void)readUserInfo
++(NSDictionary *)readUserInfo
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSLog(@"read userinfo");
+    //NSLog(@"read userinfo");
     NSDictionary *info = [defaults objectForKey:@"userinfo"];
-    NSLog(@"info:%@",info);
+    //NSLog(@"info:%@",info);
+    return info;
 }
 -(void)logout
 {
     NSLog(@"logout");
     _token = nil;
 }
-
++(NSString *)readToken
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *arr = [defaults objectForKey:@"tk"];
+    NSString *tk = [arr lastObject];
+    if (tk)
+    {
+        return tk;
+    }else
+        return nil;
+}
 -(NSString *)tk
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

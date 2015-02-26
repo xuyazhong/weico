@@ -12,9 +12,17 @@
 #import "CommentMeViewController.h"
 #import "FavListViewController.h"
 #import "MeViewController.h"
+#import "DeviceManager.h"
+#import "NetManager.h"
+#import "ShareToken.h"
+#import "AFNetworking.h"
+#import "UIButton+AFNetworking.h"
+
 
 @interface MyTabBarViewController ()
-
+{
+    NSString *currentHeadImage;
+}
 @end
 
 @implementation MyTabBarViewController
@@ -24,7 +32,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        [self createUI];
     }
     return self;
 }
@@ -33,7 +40,30 @@
 {
     [super viewDidLoad];
     
+    [self getJSON];
+    
+    [self createUI];
     // Do any additional setup after loading the view.
+}
+-(void)getJSON
+{
+    
+    NSDictionary *info = [ShareToken readUserInfo];
+    NSString *uid = [info objectForKey:@"uid"];
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",uid,@"uid", nil];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:kURLShowMe parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+        //NSLog(@"success:%@",responseObject);
+        if ([responseObject isKindOfClass:[NSDictionary class]])
+        {
+            currentHeadImage = [responseObject objectForKey:@"profile_image_url"];
+        }
+        NSLog(@"head:%@",currentHeadImage);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+    {
+        NSLog(@"failed:%@",error.localizedDescription);
+    }];
 }
 -(void)createUI
 {
@@ -76,16 +106,31 @@
 //    
 //    NSArray *selArr = [NSArray arrayWithObjects:@"home_tab_icon_1_selected",@"home_tab_icon_2_selected",@"home_tab_icon_3_selected",@"home_tab_icon_4_selected", nil];
     
-    NSArray *norArr = [NSArray arrayWithObjects:@"tab_favlist_selected",@"tab_user_comments_selected",@"tab_user_home_groups_selected",@"tab_user_at_selected",@"", nil];
+    NSArray *norArr = [NSArray arrayWithObjects:@"tab_favlist_selected",@"tab_user_comments_selected",@"tab_user_home_groups_selected",@"tab_user_at_selected",@"tab_user_home_special_selected", nil];
     
     //NSArray *selArr = [NSArray arrayWithObjects:@"home_tab_icon_1_selected",@"home_tab_icon_2_selected",@"home_tab_icon_3_selected",@"home_tab_icon_4_selected", nil];
-    
+    CGFloat btnWidth = [DeviceManager currentScreenSize].width/norArr.count;
     for (int i=0; i<norArr.count; i++)
     {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        btn.frame = CGRectMake(30+65*i, 0, 65, 45);
+        btn.frame = CGRectMake(10+btnWidth*i, 0, 45, 45);
+        btn.tintColor = [UIColor orangeColor];
         //btn.tintColor = [UIColor clearColor];
+        if (i==4)
+        {
+            [btn setBackgroundImage:[UIImage imageNamed:@"corner_circle"] forState:UIControlStateNormal];
+            //[btn setImageForState:UIControlStateNormal withURL:[NSURL URLWithString:currentHeadImage]];
+            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:currentHeadImage]];
+            
+            [btn setImageForState:UIControlStateNormal withURLRequest:request placeholderImage:[UIImage imageNamed:@"tab_user_home_special_selected"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                NSLog(@"success");
+            } failure:^(NSError *error)
+            {
+                NSLog(@"failed:%@",error.localizedDescription);
+            }];
+        }else
         [btn setImage:[UIImage imageNamed:norArr[i]] forState:UIControlStateNormal];
+        
         //[btn setImage:[UIImage imageNamed:selArr[i]] forState:UIControlStateSelected];
         btn.tag = 100+i;
         if (i==2)

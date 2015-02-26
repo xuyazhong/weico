@@ -17,7 +17,7 @@ typedef void(^DownloadFailedBlock)(NSString *errorMsg);
 @interface NetManager : NSObject
 
 //http协议 get 请求
-+(void)requestWithString:(NSString *)urlString finished:(DownloadFinishedBlock)finishedBlock failed:(DownloadFailedBlock)failedBlock;
++(void)requestWithString:(NSString *)urlString dict:(NSDictionary *)dict finished:(DownloadFinishedBlock)finishedBlock failed:(DownloadFailedBlock)failedBlock;
 
 
 

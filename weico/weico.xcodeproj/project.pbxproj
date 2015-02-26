@@ -45,8 +45,6 @@
 		8729E7991A99CD1C00D0DE26 /* TweetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8729E78E1A99CD1C00D0DE26 /* TweetModel.m */; };
 		8729E79A1A99CD1C00D0DE26 /* UpdateTweetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8729E7901A99CD1C00D0DE26 /* UpdateTweetVC.m */; };
 		8729E79B1A99CD1C00D0DE26 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8729E7921A99CD1C00D0DE26 /* UserModel.m */; };
-		8729E7A61A99D8A100D0DE26 /* myTabBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8729E7A41A99D8A100D0DE26 /* myTabBar.png */; };
-		8729E7A71A99D8A100D0DE26 /* myTabBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8729E7A51A99D8A100D0DE26 /* myTabBar@2x.png */; };
 		8729E7AE1A9B7E3B00D0DE26 /* CommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8729E7AD1A9B7E3B00D0DE26 /* CommentVC.m */; };
 		87CA5BB91A99806000E1C3BA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5BB81A99806000E1C3BA /* Foundation.framework */; };
 		87CA5BBB1A99806000E1C3BA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5BBA1A99806000E1C3BA /* CoreGraphics.framework */; };
@@ -68,6 +66,8 @@
 		87CA5BFE1A9982DF00E1C3BA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5BFD1A9982DF00E1C3BA /* ImageIO.framework */; };
 		87CA5C001A9982E600E1C3BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5BFF1A9982E600E1C3BA /* SystemConfiguration.framework */; };
 		87CA5C021A9982F100E1C3BA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5C011A9982F100E1C3BA /* Security.framework */; };
+		87F0592E1A9F71A30087FB8B /* myTabBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 87F0592C1A9F71A30087FB8B /* myTabBar.png */; };
+		87F0592F1A9F71A30087FB8B /* myTabBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 87F0592D1A9F71A30087FB8B /* myTabBar@2x.png */; };
 		BC298FC41A9EAC02009C67BE /* RepostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC298FC31A9EAC02009C67BE /* RepostViewController.m */; };
 		BC298FF91A9F1909009C67BE /* MyString.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC298FFB1A9F1909009C67BE /* MyString.strings */; };
 		BC29900A1A9F20AF009C67BE /* DeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2990091A9F20AF009C67BE /* DeviceManager.m */; };
@@ -180,8 +180,6 @@
 		8729E7901A99CD1C00D0DE26 /* UpdateTweetVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UpdateTweetVC.m; path = ../UpdateTweetVC.m; sourceTree = "<group>"; };
 		8729E7911A99CD1C00D0DE26 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserModel.h; path = ../UserModel.h; sourceTree = "<group>"; };
 		8729E7921A99CD1C00D0DE26 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserModel.m; path = ../UserModel.m; sourceTree = "<group>"; };
-		8729E7A41A99D8A100D0DE26 /* myTabBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = myTabBar.png; sourceTree = "<group>"; };
-		8729E7A51A99D8A100D0DE26 /* myTabBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myTabBar@2x.png"; sourceTree = "<group>"; };
 		8729E7AC1A9B7E3B00D0DE26 /* CommentVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentVC.h; path = ../CommentVC.h; sourceTree = "<group>"; };
 		8729E7AD1A9B7E3B00D0DE26 /* CommentVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommentVC.m; path = ../CommentVC.m; sourceTree = "<group>"; };
 		87CA5BB51A99806000E1C3BA /* weico.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = weico.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -218,6 +216,8 @@
 		87CA5BFD1A9982DF00E1C3BA /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		87CA5BFF1A9982E600E1C3BA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		87CA5C011A9982F100E1C3BA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		87F0592C1A9F71A30087FB8B /* myTabBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = myTabBar.png; sourceTree = "<group>"; };
+		87F0592D1A9F71A30087FB8B /* myTabBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myTabBar@2x.png"; sourceTree = "<group>"; };
 		BC298FC11A9EAB91009C67BE /* weico-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "weico-Prefix.pch"; sourceTree = "<group>"; };
 		BC298FC21A9EAC02009C67BE /* RepostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepostViewController.h; path = ../RepostViewController.h; sourceTree = "<group>"; };
 		BC298FC31A9EAC02009C67BE /* RepostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RepostViewController.m; path = ../RepostViewController.m; sourceTree = "<group>"; };
@@ -356,15 +356,6 @@
 			path = "UIKit+AFNetworking";
 			sourceTree = "<group>";
 		};
-		8729E7A31A99D8A100D0DE26 /* libImages */ = {
-			isa = PBXGroup;
-			children = (
-				8729E7A41A99D8A100D0DE26 /* myTabBar.png */,
-				8729E7A51A99D8A100D0DE26 /* myTabBar@2x.png */,
-			);
-			path = libImages;
-			sourceTree = "<group>";
-		};
 		87CA5BAC1A99806000E1C3BA = {
 			isa = PBXGroup;
 			children = (
@@ -423,7 +414,6 @@
 			isa = PBXGroup;
 			children = (
 				BCFD07AF1A9F3C8100C21936 /* images */,
-				8729E7A31A99D8A100D0DE26 /* libImages */,
 				87CA5BC01A99806000E1C3BA /* weico-Info.plist */,
 				87CA5BC11A99806000E1C3BA /* InfoPlist.strings */,
 				87CA5BC41A99806000E1C3BA /* main.m */,
@@ -592,6 +582,8 @@
 		BCFD07AF1A9F3C8100C21936 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				87F0592C1A9F71A30087FB8B /* myTabBar.png */,
+				87F0592D1A9F71A30087FB8B /* myTabBar@2x.png */,
 				BCFD07F61A9F5AA000C21936 /* corner_circle@2x.png */,
 				BCFD07B01A9F3C8100C21936 /* tab_config@2x.png */,
 				BCFD07B11A9F3C8100C21936 /* tab_favlist_selected@2x.png */,
@@ -694,8 +686,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCFD07C91A9F3C8100C21936 /* tab_user_at_selected@3x.png in Resources */,
-				8729E7A71A99D8A100D0DE26 /* myTabBar@2x.png in Resources */,
 				BCFD07CC1A9F3C8100C21936 /* tab_user_home_groups_selected@2x.png in Resources */,
+				87F0592F1A9F71A30087FB8B /* myTabBar@2x.png in Resources */,
 				BCFD07D31A9F3C8100C21936 /* tab_user_message_selected@3x.png in Resources */,
 				BCFD07C41A9F3C8100C21936 /* tab_favlist_selected@3x.png in Resources */,
 				87CA5BC31A99806000E1C3BA /* InfoPlist.strings in Resources */,
@@ -705,7 +697,6 @@
 				87CA5BCB1A99806100E1C3BA /* Images.xcassets in Resources */,
 				BCFD07F71A9F5AA000C21936 /* corner_circle@2x.png in Resources */,
 				BCFD07C71A9F3C8100C21936 /* tab_tail@2x.png in Resources */,
-				8729E7A61A99D8A100D0DE26 /* myTabBar.png in Resources */,
 				8729E6ED1A99CCE400D0DE26 /* Icon@2x.png in Resources */,
 				BCFD07CA1A9F3C8100C21936 /* tab_user_comments_selected@2x.png in Resources */,
 				BCFD07C51A9F3C8100C21936 /* tab_send@2x.png in Resources */,
@@ -716,6 +707,7 @@
 				BCFD07D01A9F3C8100C21936 /* tab_user_home_special_selected@2x.png in Resources */,
 				8729E51F1A99CC7E00D0DE26 /* MJRefresh.bundle in Resources */,
 				BCFD07D11A9F3C8100C21936 /* tab_user_home_special_selected@3x.png in Resources */,
+				87F0592E1A9F71A30087FB8B /* myTabBar.png in Resources */,
 				BCFD07C81A9F3C8100C21936 /* tab_user_at_selected@2x.png in Resources */,
 				BCFD07CB1A9F3C8100C21936 /* tab_user_comments_selected@3x.png in Resources */,
 				BCFD07C31A9F3C8100C21936 /* tab_favlist_selected@2x.png in Resources */,

@@ -14,7 +14,7 @@
 
 
 //http协议 get 请求
-+(void)requestWithString:(NSString *)urlString finished:(DownloadFinishedBlock)finishedBlock failed:(DownloadFailedBlock)failedBlock
++(void)requestWithString:(NSString *)urlString dict:(NSDictionary *)dict finished:(DownloadFinishedBlock)finishedBlock failed:(DownloadFailedBlock)failedBlock
 {
     //拼接路径
     NSString *path = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/tweet"];
@@ -33,7 +33,7 @@
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         //block 返回为NSData
-        [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
+        [manager GET:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
          {
              //每个数据都有唯一的请求地址,数据为NSData,写到本地的文件中,文件名用请求地址的MD5加密之后的字符串
              //MD5为对数据的一种加密方式

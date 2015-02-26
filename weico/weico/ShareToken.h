@@ -13,8 +13,9 @@
 @property (nonatomic,copy) NSString *token;
 -(void)setToken:(NSString *)token;
 -(NSString *)tk;
++(NSString *)readToken;
 -(void)logout;
 +(ShareToken *)sharedToken;
 +(void)setUserInfo:(NSDictionary *)dict;
-+(void)readUserInfo;
++(NSDictionary *)readUserInfo;
 @end
