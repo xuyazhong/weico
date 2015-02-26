@@ -136,11 +136,13 @@
         if (i==2)
         {
             btn.selected = YES;
+            
         }
         [btn addTarget:self action:@selector(btnClickAction:) forControlEvents:UIControlEventTouchUpInside];
         [customTabBar addSubview:btn];
     }
     [self.view addSubview:customTabBar];
+    self.selectedIndex = 2;
 
 }
 -(void)btnClickAction:(UIButton *)btn
