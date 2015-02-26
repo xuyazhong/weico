@@ -337,7 +337,6 @@
         cell.tweetImage.hidden = YES;
         [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+5, 300, 40)];
     }
-    //cell.timeLabel.text =
     return cell;
 }
 
@@ -348,26 +347,6 @@
     if (count >0)
     {
         int customHeight = 55+model.size.height+10+80+40;
-//        switch (count)
-//        {
-//            case 1:
-//            case 2:
-//            case 3:
-//                customHeight = 55+model.size.height+10+80+100;
-//                break;
-//            case 4:
-//            case 5:
-//            case 6:
-//                customHeight =  55+model.size.height+10+160+100;
-//                break;
-//            case 7:
-//            case 8:
-//            case 9:
-//                customHeight =  55+model.size.height+10+240+10+100;
-//                break;
-//            default:
-//                break;
-//        }
         return customHeight;
     }else
     {

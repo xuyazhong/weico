@@ -66,9 +66,13 @@
     customTabBar.image = [UIImage imageNamed:@"myTabBar"];
     //customTabBar.tintColor = [UIColor whiteColor];
     
-    NSArray *norArr = [NSArray arrayWithObjects:@"home_tab_icon_1",@"home_tab_icon_2",@"home_tab_icon_3",@"home_tab_icon_4", nil];
+//    NSArray *norArr = [NSArray arrayWithObjects:@"home_tab_icon_1",@"home_tab_icon_2",@"home_tab_icon_3",@"home_tab_icon_4", nil];
+//    
+//    NSArray *selArr = [NSArray arrayWithObjects:@"home_tab_icon_1_selected",@"home_tab_icon_2_selected",@"home_tab_icon_3_selected",@"home_tab_icon_4_selected", nil];
     
-    NSArray *selArr = [NSArray arrayWithObjects:@"home_tab_icon_1_selected",@"home_tab_icon_2_selected",@"home_tab_icon_3_selected",@"home_tab_icon_4_selected", nil];
+    NSArray *norArr = [NSArray arrayWithObjects:@"tab_favlist_selected",@"tab_user_comments_selected",@"tab_user_home_groups_selected",@"tab_user_at_selected", nil];
+    
+    //NSArray *selArr = [NSArray arrayWithObjects:@"home_tab_icon_1_selected",@"home_tab_icon_2_selected",@"home_tab_icon_3_selected",@"home_tab_icon_4_selected", nil];
     
     for (int i=0; i<norArr.count; i++)
     {
@@ -76,7 +80,7 @@
         btn.frame = CGRectMake(30+65*i, 0, 65, 45);
         //btn.tintColor = [UIColor clearColor];
         [btn setImage:[UIImage imageNamed:norArr[i]] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:selArr[i]] forState:UIControlStateSelected];
+        //[btn setImage:[UIImage imageNamed:selArr[i]] forState:UIControlStateSelected];
         btn.tag = 100+i;
         if (i==0)
         {

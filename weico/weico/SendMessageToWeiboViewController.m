@@ -8,6 +8,8 @@
 
 #import "SendMessageToWeiboViewController.h"
 #import "HttpRequestDemoTableViewController.h"
+#import "MyTabBarViewController.h"
+
 #import "AppDelegate.h"
 
 @interface SendMessageToWeiboViewController()<UIScrollViewDelegate>
@@ -34,7 +36,11 @@
     self.titleLabel = nil;
     self.shareButton = nil;
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

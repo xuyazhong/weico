@@ -7,9 +7,12 @@
 //
 
 #import "ShareToken.h"
+#import "AFNetworking.h"
 
 @implementation ShareToken
-
+{
+    BOOL isChecked;
+}
 - (instancetype)init
 {
     self = [super init];
@@ -29,6 +32,26 @@
     [defaults setObject:arr forKey:@"tk"];
     [defaults synchronize];
 }
++(void)setUserInfo:(NSDictionary *)dict
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"write userinfo");
+    [defaults setObject:dict forKey:@"userinfo"];
+    [defaults synchronize];
+}
++(void)readUserInfo
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"read userinfo");
+    NSDictionary *info = [defaults objectForKey:@"userinfo"];
+    NSLog(@"info:%@",info);
+}
+-(void)logout
+{
+    NSLog(@"logout");
+    _token = nil;
+}
+
 -(NSString *)tk
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
