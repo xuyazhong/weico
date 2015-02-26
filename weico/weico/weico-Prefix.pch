@@ -1,0 +1,33 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+#import "WeiboSDK.h"
+
+#import "XYZ.h"
+
+#define kURLHomeLine    @"https://api.weibo.com/2/statuses/home_timeline.json"
+#define kURLGroupLists  @"https://api.weibo.com/2/friendships/groups.json"
+#define kURLGroup       @"https://api.weibo.com/2/friendships/groups/timeline.json"
+#define kURLupdate      @"https://api.weibo.com/2/statuses/update.json"
+
+//所有评论
+#define kURLTimeLine    @"https://api.weibo.com/2/comments/timeline.json"
+//发出的评论
+#define kURLByMe        @"https://api.weibo.com/2/comments/by_me.json"
+//收到的评论
+#define kURLToMe        @"https://api.weibo.com/2/comments/to_me.json"
+#define kURLRepost      @"https://api.weibo.com/2/statuses/repost.json"
+
+#endif

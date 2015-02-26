@@ -311,6 +311,8 @@
 		87CA5BFE1A9982DF00E1C3BA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5BFD1A9982DF00E1C3BA /* ImageIO.framework */; };
 		87CA5C001A9982E600E1C3BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5BFF1A9982E600E1C3BA /* SystemConfiguration.framework */; };
 		87CA5C021A9982F100E1C3BA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5C011A9982F100E1C3BA /* Security.framework */; };
+		BC298FC41A9EAC02009C67BE /* RepostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC298FC31A9EAC02009C67BE /* RepostViewController.m */; };
+		BC298FF91A9F1909009C67BE /* MyString.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC298FFB1A9F1909009C67BE /* MyString.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -651,7 +653,6 @@
 		87CA5BC01A99806000E1C3BA /* weico-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "weico-Info.plist"; sourceTree = "<group>"; };
 		87CA5BC21A99806000E1C3BA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		87CA5BC41A99806000E1C3BA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		87CA5BC61A99806000E1C3BA /* weico-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "weico-Prefix.pch"; sourceTree = "<group>"; };
 		87CA5BC71A99806000E1C3BA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		87CA5BC81A99806000E1C3BA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		87CA5BCA1A99806100E1C3BA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -679,6 +680,14 @@
 		87CA5BFD1A9982DF00E1C3BA /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		87CA5BFF1A9982E600E1C3BA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		87CA5C011A9982F100E1C3BA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		BC298FC11A9EAB91009C67BE /* weico-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "weico-Prefix.pch"; sourceTree = "<group>"; };
+		BC298FC21A9EAC02009C67BE /* RepostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RepostViewController.h; sourceTree = "<group>"; };
+		BC298FC31A9EAC02009C67BE /* RepostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RepostViewController.m; sourceTree = "<group>"; };
+		BC298FF51A9F18EE009C67BE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		BC298FF61A9F18EF009C67BE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		BC298FFA1A9F1909009C67BE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MyString.strings; sourceTree = "<group>"; };
+		BC298FFC1A9F190F009C67BE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MyString.strings"; sourceTree = "<group>"; };
+		BC298FFD1A9F1BEB009C67BE /* XYZ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYZ.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1098,6 +1107,8 @@
 		8729E7A21A99CD9E00D0DE26 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				BC298FC21A9EAC02009C67BE /* RepostViewController.h */,
+				BC298FC31A9EAC02009C67BE /* RepostViewController.m */,
 				8729E7811A99CD1C00D0DE26 /* HomeViewController.h */,
 				8729E7821A99CD1C00D0DE26 /* HomeViewController.m */,
 			);
@@ -1185,7 +1196,9 @@
 				87CA5BC01A99806000E1C3BA /* weico-Info.plist */,
 				87CA5BC11A99806000E1C3BA /* InfoPlist.strings */,
 				87CA5BC41A99806000E1C3BA /* main.m */,
-				87CA5BC61A99806000E1C3BA /* weico-Prefix.pch */,
+				BC298FC11A9EAB91009C67BE /* weico-Prefix.pch */,
+				BC298FFB1A9F1909009C67BE /* MyString.strings */,
+				BC298FFD1A9F1BEB009C67BE /* XYZ.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1285,6 +1298,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hans",
 			);
 			mainGroup = 87CA5BAC1A99806000E1C3BA;
 			productRefGroup = 87CA5BB61A99806000E1C3BA /* Products */;
@@ -1531,6 +1545,7 @@
 				8729E7501A99CCE400D0DE26 /* timeline_item_address_icon@2x.png in Resources */,
 				8729E6FF1A99CCE400D0DE26 /* message_button_selected_both.png in Resources */,
 				8729E6BC1A99CCE400D0DE26 /* detail_button_forward.png in Resources */,
+				BC298FF91A9F1909009C67BE /* MyString.strings in Resources */,
 				8729E6AA1A99CCE400D0DE26 /* compose_toolbar_bg@2x.png in Resources */,
 				8729E6A51A99CCE400D0DE26 /* compose_toolbar_6@3x.png in Resources */,
 				87CA5BF41A9980B800E1C3BA /* WeiboSDK.bundle in Resources */,
@@ -1586,6 +1601,7 @@
 				8729E55D1A99CCC400D0DE26 /* MyTabBarViewController.m in Sources */,
 				8729E5541A99CC9E00D0DE26 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				8729E55A1A99CC9E00D0DE26 /* UIWebView+AFNetworking.m in Sources */,
+				BC298FC41A9EAC02009C67BE /* RepostViewController.m in Sources */,
 				8729E5381A99CC9200D0DE26 /* AFHTTPRequestOperation.m in Sources */,
 				8729E53A1A99CC9200D0DE26 /* AFHTTPSessionManager.m in Sources */,
 				8729E5551A99CC9E00D0DE26 /* UIAlertView+AFNetworking.m in Sources */,
@@ -1634,6 +1650,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				87CA5BC21A99806000E1C3BA /* en */,
+				BC298FF51A9F18EE009C67BE /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1642,8 +1659,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				87CA5BDB1A99806100E1C3BA /* en */,
+				BC298FF61A9F18EF009C67BE /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		BC298FFB1A9F1909009C67BE /* MyString.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC298FFA1A9F1909009C67BE /* en */,
+				BC298FFC1A9F190F009C67BE /* zh-Hans */,
+			);
+			name = MyString.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
