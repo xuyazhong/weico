@@ -63,8 +63,9 @@
 }
 -(void)createRetweet
 {
-    _retweetView = [[UIView alloc]initWithFrame:CGRectMake(10, 230, 320, 160)];
+    _retweetView = [[UIView alloc]initWithFrame:CGRectMake(0, 230, 320, 160)];
     _retweetView.backgroundColor = [UIColor grayColor];
+    _retweetView.alpha = 0.5;
     _retweetLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 80)];
     [_retweetView addSubview:_retweetLabel];
     _retweetImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, 80, 80, 80)];

@@ -11,7 +11,7 @@
 #import "ShareToken.h"
 #import "TweetModel.h"
 #import "TweetCell.h"
-#import "UIImageView+AFNetworking.h"
+#import "UIImageView+WebCache.h"
 #import "ListsModel.h"
 #import "UpdateTweetVC.h"
 #import "RepostViewController.h"
@@ -338,7 +338,7 @@
     }
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
     //cell.textLabel.text = model.text;
-    [cell.userInfo setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
+    [cell.userInfo sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
     //cell.tweetLabel.text = model.text;
     
     cell.tweetLabel.text = model.text;
@@ -355,18 +355,11 @@
     if (model.pic_urls.count>0)
     {
         cell.tweetImage.hidden = NO;
-        [cell.tweetImage setImageWithURL:[NSURL URLWithString:[model.pic_urls firstObject]]];
+        [cell.tweetImage sd_setImageWithURL:[NSURL URLWithString:[model.pic_urls firstObject]]];
         NSLog(@"pic:%@",[model.pic_urls firstObject]);
         cell.tweetImage.frame = CGRectMake(10, 55+model.size.height+10+10, 80, 80);
-        [cell.retweetView setFrame:CGRectMake(10, 55+model.size.height+10+90, 320, 160)];
-    }else
-    {
-        cell.tweetImage.hidden = YES;
-        [cell.retweetView setFrame:CGRectMake(10, 55+model.size.height+10+10, 320, 160)];
-    }
-    
-    NSLog(@"model.model.text:%@",model.model.text);
-    if (model.model.size.height>0)
+        [cell.retweetView setFrame:CGRectMake(0, 55+model.size.height+10+90, 320, 160)];
+    }else if (model.model.size.height>0)
     {
         cell.retweetView.hidden = NO;
         cell.retweetLabel.font = [UIFont systemFontOfSize:16];
@@ -379,20 +372,24 @@
         if (model.model.pic_urls.count>0)
         {
             cell.retweetImage.hidden = NO;
-            [cell.tweetImage setImageWithURL:[NSURL URLWithString:[model.model.pic_urls firstObject]]];
+            [cell.tweetImage sd_setImageWithURL:[NSURL URLWithString:[model.model.pic_urls firstObject]]];
             NSLog(@"retweet pic:%@",[model.model.pic_urls firstObject]);
-            cell.retweetView.frame = CGRectMake(10, 55+model.size.height+10+10,320,160);
-            
+            cell.retweetView.frame = CGRectMake(0, 55+model.size.height+10+10,320,55+model.size.height+10+10+40+80);
+            cell.retweetLabel.frame = CGRectMake(10, 0, model.model.size.width, model.model.size.height);
+            cell.retweetImage.frame = CGRectMake(10, model.model.size.height+80, 40, 40);
+
             [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10+model.model.size.height+100, 300, 40)];
         }else
         {
             cell.retweetImage.hidden = YES;
+            cell.retweetView.frame = CGRectMake(0, 55+model.size.height+10+10,320,model.model.size.height+10);
+            cell.retweetLabel.frame = CGRectMake(10, 0, model.model.size.width, model.model.size.height);
             [cell.controlview setFrame:CGRectMake(10, 55+model.model.size.height+10+10+model.model.size.height+10, 300, 40)];
         }
     }else
     {
         cell.retweetView.hidden = YES;
-        [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+5, 300, 40)];
+        [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+40+5, 300, 40)];
     }
     
     return cell;
@@ -404,15 +401,18 @@
     NSInteger count = model.pic_urls.count;
     if (count >0)
     {
-        int customHeight = 55+model.size.height+10+80+40;
+        int customHeight = 55+model.size.height+10+80+40+60;
         return customHeight;
-    }else
+    }else if(model.model.size.height>0)
     {
         if (model.model.pic_urls.count>0)
         {
-            return 55+model.size.height+10+40+55+model.model.size.height+10+40;
+            return 55+model.size.height+10+40+55+model.model.size.height+10+40+40;
         }else
             return 55+model.size.height+10+40+55+model.model.size.height+10+40;
+    }else
+    {
+        return 55+model.size.height+10+40;
     }
 }
 
