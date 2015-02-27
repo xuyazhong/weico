@@ -77,7 +77,7 @@
     [updateBtn addTarget:self action:@selector(updateTweet) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithCustomView:updateBtn];
     self.navigationItem.rightBarButtonItem = right;
-    titleBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [titleBtn setFrame:CGRectMake(0, 0, 80, 64)];
     [titleBtn setTitle:@"首页" forState:UIControlStateNormal];
     [titleBtn addTarget:self action:@selector(listGroup:) forControlEvents:UIControlEventTouchUpInside];
@@ -232,6 +232,34 @@
             user.uid = [userDict objectForKey:@"id"];
             user.profile_image_url = [userDict objectForKey:@"profile_image_url"];
             model.user = user;
+            //[subDict validateValue:<#(inout __autoreleasing id *)#> forKey:<#(NSString *)#> error:<#(out NSError *__autoreleasing *)#>]
+            NSDictionary *retweeted = [subDict objectForKey:@"retweeted_status"];
+            TweetModel *retweetModel = [[TweetModel alloc]init];
+            if (retweeted)
+            {
+                retweetModel.tid = [retweeted objectForKey:@"id"];
+                retweetModel.mid = [retweeted objectForKey:@"mid"];
+                retweetModel.idstr = [retweeted objectForKey:@"idstr"];
+                retweetModel.text = [retweeted objectForKey:@"text"];
+                retweetModel.source = [self flattenHTML:[retweeted objectForKey:@"source"]];
+                retweetModel.rid = [retweeted objectForKey:@"rid"];
+                NSArray *retweetPicArr = [retweeted objectForKey:@"pic_urls"];
+                NSMutableArray *retweetUrlArray = [[NSMutableArray alloc]init];
+                for (NSDictionary *retPicDict in retweetPicArr)
+                {
+                    [retweetUrlArray addObject:[retPicDict objectForKey:@"thumbnail_pic"]];
+                }
+                retweetModel.pic_urls = retweetUrlArray;
+                //model.thumbnail_pic = [subDict objectForKey:@"thumbnail_pic"];
+                NSDictionary *retuserDict = [retweeted objectForKey:@"user"];
+                UserModel *retuser = [[UserModel alloc]init];
+                retuser.name = [retuserDict objectForKey:@"name"];
+                retuser.uid = [retuserDict objectForKey:@"id"];
+                retuser.profile_image_url = [retuserDict objectForKey:@"profile_image_url"];
+                retweetModel.user = retuser;
+            }
+            retweetModel.size = [retweetModel currentSize];
+            model.model = retweetModel;
             //计算好字符串的size,将值提前存到数据模型中
             model.size = [model currentSize];
             [_dataArray addObject:model];
@@ -330,13 +358,43 @@
         [cell.tweetImage setImageWithURL:[NSURL URLWithString:[model.pic_urls firstObject]]];
         NSLog(@"pic:%@",[model.pic_urls firstObject]);
         cell.tweetImage.frame = CGRectMake(10, 55+model.size.height+10+10, 80, 80);
-        
-        [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+90, 300, 40)];
+        [cell.retweetView setFrame:CGRectMake(10, 55+model.size.height+10+90, 320, 160)];
     }else
     {
         cell.tweetImage.hidden = YES;
+        [cell.retweetView setFrame:CGRectMake(10, 55+model.size.height+10+10, 320, 160)];
+    }
+    
+    NSLog(@"model.model.text:%@",model.model.text);
+    if (model.model.size.height>0)
+    {
+        cell.retweetView.hidden = NO;
+        cell.retweetLabel.font = [UIFont systemFontOfSize:16];
+        cell.retweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        cell.retweetLabel.numberOfLines = 0;
+        //cell.retweetLabel.frame = CGRectMake(10, 70, model.size.width, model.size.height);
+        cell.sourceLabel.font = [UIFont systemFontOfSize:12];
+        
+        cell.retweetLabel.text = [NSString stringWithFormat:@"@%@:%@",model.model.user.name,model.model.text];
+        if (model.model.pic_urls.count>0)
+        {
+            cell.retweetImage.hidden = NO;
+            [cell.tweetImage setImageWithURL:[NSURL URLWithString:[model.model.pic_urls firstObject]]];
+            NSLog(@"retweet pic:%@",[model.model.pic_urls firstObject]);
+            cell.retweetView.frame = CGRectMake(10, 55+model.size.height+10+10,320,160);
+            
+            [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10+model.model.size.height+100, 300, 40)];
+        }else
+        {
+            cell.retweetImage.hidden = YES;
+            [cell.controlview setFrame:CGRectMake(10, 55+model.model.size.height+10+10+model.model.size.height+10, 300, 40)];
+        }
+    }else
+    {
+        cell.retweetView.hidden = YES;
         [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+5, 300, 40)];
     }
+    
     return cell;
 }
 
@@ -350,7 +408,11 @@
         return customHeight;
     }else
     {
-        return 55+model.size.height+10+40;
+        if (model.model.pic_urls.count>0)
+        {
+            return 55+model.size.height+10+40+55+model.model.size.height+10+40;
+        }else
+            return 55+model.size.height+10+40+55+model.model.size.height+10+40;
     }
 }
 

@@ -19,4 +19,8 @@
 @property (strong, nonatomic)  UIButton *like;
 @property (strong, nonatomic)  UIImageView *tweetImage;
 @property (strong, nonatomic)  UIView *controlview;
+@property (strong, nonatomic)  UIView *retweetView;
+@property (strong, nonatomic)  UILabel *retweetLabel;
+@property (strong, nonatomic)  UIImageView *retweetImage;
+
 @end

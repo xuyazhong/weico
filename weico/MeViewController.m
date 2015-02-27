@@ -7,6 +7,8 @@
 //
 
 #import "MeViewController.h"
+#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
 
 @interface MeViewController ()
 {
@@ -30,10 +32,17 @@
 {
     [super viewDidLoad];
     self.title = @"我";
+    UIButton *imageview = [UIButton buttonWithType:UIButtonTypeCustom];
+    [imageview setFrame:CGRectMake(100, 100, 50, 50)];
+    [imageview sd_setImageWithURL:[NSURL URLWithString:@"http://ww2.sinaimg.cn/crop.0.0.640.640.1024/706aa96djw8ecemzyzbz8j20hs0hsq38.jpg"] forState:UIControlStateNormal];
+    [self.view addSubview:imageview];
+    
+    /*
     _myTableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     _myTableView.delegate = self;
     _myTableView.dataSource = self;
     [self.view addSubview:_myTableView];
+     */
     // Do any additional setup after loading the view.
 }
 
@@ -65,6 +74,11 @@
 {
     static NSString *cellID= @"cellID";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
+        
+    }
     return cell;
 }
 @end

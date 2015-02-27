@@ -16,12 +16,16 @@
 #import "NetManager.h"
 #import "ShareToken.h"
 #import "AFNetworking.h"
-#import "UIButton+AFNetworking.h"
+#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
 
 
 @interface MyTabBarViewController ()
 {
     NSString *currentHeadImage;
+    UIImageView *head;
+    UILabel *selectLabel;
+    CGFloat btnWidth;
 }
 @end
 
@@ -32,6 +36,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
+
     }
     return self;
 }
@@ -55,10 +60,10 @@
     [manager GET:kURLShowMe parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
         //NSLog(@"success:%@",responseObject);
-        if ([responseObject isKindOfClass:[NSDictionary class]])
-        {
-            currentHeadImage = [responseObject objectForKey:@"profile_image_url"];
-        }
+
+        currentHeadImage = [responseObject objectForKey:@"profile_image_url"];
+        [head sd_setImageWithURL:[NSURL URLWithString:currentHeadImage]];
+//        [headBtn sd_setImageWithURL:[NSURL URLWithString:currentHeadImage] forState:UIControlStateNormal];
         NSLog(@"head:%@",currentHeadImage);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
     {
@@ -100,61 +105,81 @@
     UIImageView  *customTabBar = [[UIImageView alloc]initWithFrame:CGRectMake(0, tabBarViewY, self.view.bounds.size.width, 49)];
     customTabBar.userInteractionEnabled = YES;
     customTabBar.image = [UIImage imageNamed:@"myTabBar"];
-    //customTabBar.tintColor = [UIColor whiteColor];
+    customTabBar.tintColor = [UIColor orangeColor];
     
-//    NSArray *norArr = [NSArray arrayWithObjects:@"home_tab_icon_1",@"home_tab_icon_2",@"home_tab_icon_3",@"home_tab_icon_4", nil];
-//    
-//    NSArray *selArr = [NSArray arrayWithObjects:@"home_tab_icon_1_selected",@"home_tab_icon_2_selected",@"home_tab_icon_3_selected",@"home_tab_icon_4_selected", nil];
-    
-    NSArray *norArr = [NSArray arrayWithObjects:@"tab_favlist_selected",@"tab_user_comments_selected",@"tab_user_home_groups_selected",@"tab_user_at_selected",@"tab_user_home_special_selected", nil];
+    NSArray *norArr = [NSArray arrayWithObjects:@"tab_favlist_selected",@"tab_user_comments_selected",@"tab_user_home_groups_selected",@"tab_user_at_selected",@"corner_circle", nil];
     
     //NSArray *selArr = [NSArray arrayWithObjects:@"home_tab_icon_1_selected",@"home_tab_icon_2_selected",@"home_tab_icon_3_selected",@"home_tab_icon_4_selected", nil];
-    CGFloat btnWidth = [DeviceManager currentScreenSize].width/norArr.count;
+    btnWidth = [DeviceManager currentScreenSize].width/norArr.count;
     for (int i=0; i<norArr.count; i++)
     {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        btn.frame = CGRectMake(10+btnWidth*i, 0, 45, 45);
-        btn.tintColor = [UIColor orangeColor];
-        //btn.tintColor = [UIColor clearColor];
         if (i==4)
         {
-            [btn setBackgroundImage:[UIImage imageNamed:@"corner_circle"] forState:UIControlStateNormal];
-            //[btn setImageForState:UIControlStateNormal withURL:[NSURL URLWithString:currentHeadImage]];
-            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:currentHeadImage]];
+            head = [[UIImageView alloc]initWithFrame:CGRectMake(10+btnWidth*i, 0, 45, 45)];
+            [customTabBar addSubview:head];
             
-            [btn setImageForState:UIControlStateNormal withURLRequest:request placeholderImage:[UIImage imageNamed:@"tab_user_home_special_selected"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                NSLog(@"success");
-            } failure:^(NSError *error)
+            UIImageView *headBtn = [[UIImageView alloc]initWithFrame:CGRectMake(10+btnWidth*i, 0, 45, 45)];
+//            [headBtn setBackgroundImage:[UIImage imageNamed:norArr[i]] forState:UIControlStateNormal];
+            [headBtn setImage:[UIImage imageNamed:norArr[i]]];
+            headBtn.tag = 100+i;
+            headBtn.userInteractionEnabled = YES;
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
+            [headBtn addGestureRecognizer:tap];
+            //[headBtn addTarget:self action:@selector(btnClickAction:) forControlEvents:UIControlEventTouchUpInside];
+            [customTabBar addSubview:headBtn];
+        }
+        else
+        {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.frame = CGRectMake(10+btnWidth*i, 0, 45, 45);
+            //btn.tintColor = [UIColor orangeColor];
+            btn.tag = 100+i;
+            if (i==2)
             {
-                NSLog(@"failed:%@",error.localizedDescription);
-            }];
-        }else
-        [btn setImage:[UIImage imageNamed:norArr[i]] forState:UIControlStateNormal];
+                btn.selected = YES;
+                selectLabel = [[UILabel alloc]initWithFrame:CGRectMake(btnWidth*i+btnWidth/2, 45, 5, 5)];
+                selectLabel.backgroundColor = [UIColor orangeColor];
+                [customTabBar addSubview:selectLabel];
+            }
+            [btn addTarget:self action:@selector(btnClickAction:) forControlEvents:UIControlEventTouchUpInside];
+            [btn setImage:[UIImage imageNamed:norArr[i]] forState:UIControlStateNormal];
+            [customTabBar addSubview:btn];
+        }
         
         //[btn setImage:[UIImage imageNamed:selArr[i]] forState:UIControlStateSelected];
-        btn.tag = 100+i;
-        if (i==2)
-        {
-            btn.selected = YES;
-            
-        }
-        [btn addTarget:self action:@selector(btnClickAction:) forControlEvents:UIControlEventTouchUpInside];
-        [customTabBar addSubview:btn];
+        
+        
     }
     [self.view addSubview:customTabBar];
     self.selectedIndex = 2;
 
 }
+-(void)tapAction:(UITapGestureRecognizer *)tap
+{
+    for (int i=0; i<4; i++)
+    {
+        UIButton *mybtn = (UIButton *)[self.view viewWithTag:100+i];
+        mybtn.selected = NO;
+    }
+    UIImageView *img = (UIImageView *)tap.view;
+    
+    self.selectedIndex = 4;
+    CGRect frame = selectLabel.frame;
+    frame.origin.x = img.frame.origin.x+btnWidth/2-10;
+    selectLabel.frame = frame;
+}
 -(void)btnClickAction:(UIButton *)btn
 {
-    //NSLog(@"btn.tag:%d",btn.tag);
-    for (int i=0; i<5; i++)
+    for (int i=0; i<4; i++)
     {
         UIButton *mybtn = (UIButton *)[self.view viewWithTag:100+i];
         mybtn.selected = NO;
     }
     btn.selected = YES;
     self.selectedIndex = btn.tag-100;
+    CGRect frame = selectLabel.frame;
+    frame.origin.x = btn.frame.origin.x+btnWidth/2-10;
+    selectLabel.frame = frame;
 }
 - (void)didReceiveMemoryWarning
 {

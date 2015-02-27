@@ -22,7 +22,7 @@
 @property (nonatomic,copy) NSString *thumbnail_pic;
 @property (nonatomic,copy) NSString *rid;
 @property (nonatomic,strong) UserModel *user;
-
+@property (nonatomic,strong) TweetModel *model;
 
 //储存微博正文的size
 @property (nonatomic,assign) CGSize size;

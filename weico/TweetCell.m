@@ -35,6 +35,7 @@
     [self createUserInfo];
     [self createTweet];
     [self createTweetImage];
+    [self createRetweet];
     [self createButton];
 }
 -(void)createUserInfo
@@ -49,7 +50,6 @@
     [headView addSubview:_timeLabel];
     [headView addSubview:_sourceLabel];
     [self.contentView addSubview:headView];
-    
 }
 -(void)createTweet
 {
@@ -61,9 +61,19 @@
     _tweetImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, 150, 80, 80)];
     [self.contentView addSubview:_tweetImage];
 }
+-(void)createRetweet
+{
+    _retweetView = [[UIView alloc]initWithFrame:CGRectMake(10, 230, 320, 160)];
+    _retweetView.backgroundColor = [UIColor grayColor];
+    _retweetLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 80)];
+    [_retweetView addSubview:_retweetLabel];
+    _retweetImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, 80, 80, 80)];
+    [_retweetView addSubview:_retweetImage];
+    [self.contentView addSubview:_retweetView];
+}
 -(void)createButton
 {
-    _controlview = [[UIView alloc]initWithFrame:CGRectMake(10, 230, 300, 40)];
+    _controlview = [[UIView alloc]initWithFrame:CGRectMake(10, 390, 300, 40)];
     _controlview.userInteractionEnabled = YES;
     [self.contentView addSubview:_controlview];
     
