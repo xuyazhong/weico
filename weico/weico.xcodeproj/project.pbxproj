@@ -68,6 +68,9 @@
 		87CA5C021A9982F100E1C3BA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5C011A9982F100E1C3BA /* Security.framework */; };
 		87F0592E1A9F71A30087FB8B /* myTabBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 87F0592C1A9F71A30087FB8B /* myTabBar.png */; };
 		87F0592F1A9F71A30087FB8B /* myTabBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 87F0592D1A9F71A30087FB8B /* myTabBar@2x.png */; };
+		BC0581421AA193FE008DD754 /* xyz.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC0581411AA193FE008DD754 /* xyz.plist */; };
+		BC0581471AA1A397008DD754 /* t_comments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC0581451AA1A397008DD754 /* t_comments@2x.png */; };
+		BC0581481AA1A397008DD754 /* t_repost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC0581461AA1A397008DD754 /* t_repost@2x.png */; };
 		BC0973211AA01654007E0F06 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0973011AA01654007E0F06 /* MKAnnotationView+WebCache.m */; };
 		BC0973221AA01654007E0F06 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0973031AA01654007E0F06 /* NSData+ImageContentType.m */; };
 		BC0973231AA01654007E0F06 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0973051AA01654007E0F06 /* SDImageCache.m */; };
@@ -235,6 +238,9 @@
 		87CA5C011A9982F100E1C3BA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		87F0592C1A9F71A30087FB8B /* myTabBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = myTabBar.png; sourceTree = "<group>"; };
 		87F0592D1A9F71A30087FB8B /* myTabBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myTabBar@2x.png"; sourceTree = "<group>"; };
+		BC0581411AA193FE008DD754 /* xyz.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = xyz.plist; sourceTree = "<group>"; };
+		BC0581451AA1A397008DD754 /* t_comments@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_comments@2x.png"; sourceTree = "<group>"; };
+		BC0581461AA1A397008DD754 /* t_repost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_repost@2x.png"; sourceTree = "<group>"; };
 		BC0973001AA01654007E0F06 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		BC0973011AA01654007E0F06 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		BC0973021AA01654007E0F06 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -472,6 +478,7 @@
 				BC298FC11A9EAB91009C67BE /* weico-Prefix.pch */,
 				BC298FFB1A9F1909009C67BE /* MyString.strings */,
 				BC298FFD1A9F1BEB009C67BE /* XYZ.h */,
+				BC0581411AA193FE008DD754 /* xyz.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -685,6 +692,8 @@
 		BCFD07AF1A9F3C8100C21936 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				BC0581451AA1A397008DD754 /* t_comments@2x.png */,
+				BC0581461AA1A397008DD754 /* t_repost@2x.png */,
 				87F0592C1A9F71A30087FB8B /* myTabBar.png */,
 				87F0592D1A9F71A30087FB8B /* myTabBar@2x.png */,
 				BCFD07F61A9F5AA000C21936 /* corner_circle@2x.png */,
@@ -789,6 +798,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCFD07C91A9F3C8100C21936 /* tab_user_at_selected@3x.png in Resources */,
+				BC0581471AA1A397008DD754 /* t_comments@2x.png in Resources */,
 				BCFD07CC1A9F3C8100C21936 /* tab_user_home_groups_selected@2x.png in Resources */,
 				87F0592F1A9F71A30087FB8B /* myTabBar@2x.png in Resources */,
 				BCFD07D31A9F3C8100C21936 /* tab_user_message_selected@3x.png in Resources */,
@@ -801,6 +811,7 @@
 				BCFD07F71A9F5AA000C21936 /* corner_circle@2x.png in Resources */,
 				BCFD07C71A9F3C8100C21936 /* tab_tail@2x.png in Resources */,
 				8729E6ED1A99CCE400D0DE26 /* Icon@2x.png in Resources */,
+				BC0581421AA193FE008DD754 /* xyz.plist in Resources */,
 				BCFD07CA1A9F3C8100C21936 /* tab_user_comments_selected@2x.png in Resources */,
 				BCFD07C51A9F3C8100C21936 /* tab_send@2x.png in Resources */,
 				BCFD07CF1A9F3C8100C21936 /* tab_user_home_selected@3x.png in Resources */,
@@ -813,6 +824,7 @@
 				87F0592E1A9F71A30087FB8B /* myTabBar.png in Resources */,
 				BCFD07C81A9F3C8100C21936 /* tab_user_at_selected@2x.png in Resources */,
 				BCFD07CB1A9F3C8100C21936 /* tab_user_comments_selected@3x.png in Resources */,
+				BC0581481AA1A397008DD754 /* t_repost@2x.png in Resources */,
 				BCFD07C31A9F3C8100C21936 /* tab_favlist_selected@2x.png in Resources */,
 				BC298FF91A9F1909009C67BE /* MyString.strings in Resources */,
 				87CA5BF41A9980B800E1C3BA /* WeiboSDK.bundle in Resources */,

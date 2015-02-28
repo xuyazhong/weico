@@ -71,15 +71,17 @@
 }
 -(void)createNav
 {
-    UIButton *updateBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *updateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     updateBtn.frame = CGRectMake(0, 0, 40, 40);
-    [updateBtn setBackgroundImage:[UIImage imageNamed:@"mask_timeline_top_icon_2"] forState:UIControlStateNormal];
+    //[updateBtn setBackgroundImage:[UIImage imageNamed:@"mask_timeline_top_icon_2"] forState:UIControlStateNormal];
+    [updateBtn setBackgroundImage:[UIImage imageNamed:@"tab_send"] forState:UIControlStateNormal];
     [updateBtn addTarget:self action:@selector(updateTweet) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithCustomView:updateBtn];
     self.navigationItem.rightBarButtonItem = right;
     titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [titleBtn setFrame:CGRectMake(0, 0, 80, 64)];
     [titleBtn setTitle:@"首页" forState:UIControlStateNormal];
+    [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [titleBtn addTarget:self action:@selector(listGroup:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = titleBtn;
 //    self.navigationController.navigationItem.titleView = titleBtn;
@@ -146,7 +148,7 @@
 {
     ListsModel *model = [_groupListArray objectAtIndex:btn.tag-50];
     NSLog(@"name:%@",model.name);
-    NSLog(@"id:%@",model.idstr);
+    //NSLog(@"id:%@",model.idstr);
     //btn.titleLabel.text
     [titleBtn setTitle:model.name forState:UIControlStateNormal];
     //self.navigationItem.titleView = btn;
@@ -166,7 +168,13 @@
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    groupList.hidden = YES;
+    UITouch *touch = [touches anyObject];
+    NSLog(@"touch:%@",touch);
+    if (groupList.hidden == NO)
+    {
+        groupList.hidden = YES;
+    }
+    
 }
 -(void)getJSON:(int)page andUrl:(NSString *)url andGroupID:(NSString *)groupid
 {
@@ -218,6 +226,8 @@
             //model.source = [subDict objectForKey:@"source"];
             model.source = [self flattenHTML:[subDict objectForKey:@"source"]];
             model.rid = [subDict objectForKey:@"rid"];
+            model.reposts_count = [subDict objectForKey:@"reposts_count"];
+            model.comments_count = [subDict objectForKey:@"comments_count"];
             NSArray *picArr = [subDict objectForKey:@"pic_urls"];
             NSMutableArray *picUrlArray = [[NSMutableArray alloc]init];
             for (NSDictionary *picDict in picArr)
@@ -232,7 +242,6 @@
             user.uid = [userDict objectForKey:@"id"];
             user.profile_image_url = [userDict objectForKey:@"profile_image_url"];
             model.user = user;
-            //[subDict validateValue:<#(inout __autoreleasing id *)#> forKey:<#(NSString *)#> error:<#(out NSError *__autoreleasing *)#>]
             NSDictionary *retweeted = [subDict objectForKey:@"retweeted_status"];
             TweetModel *retweetModel = [[TweetModel alloc]init];
             if (retweeted)
@@ -240,7 +249,6 @@
                 retweetModel.tid = [retweeted objectForKey:@"id"];
                 retweetModel.mid = [retweeted objectForKey:@"mid"];
                 retweetModel.idstr = [retweeted objectForKey:@"idstr"];
-                retweetModel.text = [retweeted objectForKey:@"text"];
                 retweetModel.source = [self flattenHTML:[retweeted objectForKey:@"source"]];
                 retweetModel.rid = [retweeted objectForKey:@"rid"];
                 NSArray *retweetPicArr = [retweeted objectForKey:@"pic_urls"];
@@ -250,13 +258,14 @@
                     [retweetUrlArray addObject:[retPicDict objectForKey:@"thumbnail_pic"]];
                 }
                 retweetModel.pic_urls = retweetUrlArray;
-                //model.thumbnail_pic = [subDict objectForKey:@"thumbnail_pic"];
+                retweetModel.thumbnail_pic = [subDict objectForKey:@"thumbnail_pic"];
                 NSDictionary *retuserDict = [retweeted objectForKey:@"user"];
                 UserModel *retuser = [[UserModel alloc]init];
                 retuser.name = [retuserDict objectForKey:@"name"];
                 retuser.uid = [retuserDict objectForKey:@"id"];
                 retuser.profile_image_url = [retuserDict objectForKey:@"profile_image_url"];
                 retweetModel.user = retuser;
+                retweetModel.text =[NSString stringWithFormat:@"@%@:%@",retuser.name,[retweeted objectForKey:@"text"]];
             }
             retweetModel.size = [retweetModel currentSize];
             model.model = retweetModel;
@@ -337,9 +346,7 @@
         cell = [[TweetCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
     }
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
-    //cell.textLabel.text = model.text;
     [cell.userInfo sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
-    //cell.tweetLabel.text = model.text;
     
     cell.tweetLabel.text = model.text;
     cell.tweetLabel.font = [UIFont systemFontOfSize:16];
@@ -352,64 +359,94 @@
     cell.timeLabel.font = [UIFont systemFontOfSize:12];
     cell.sourceLabel.text = [NSString stringWithFormat:@"来自%@",model.source];
     cell.sourceLabel.font = [UIFont systemFontOfSize:12];
+    NSLog(@"comment:%@&&repost:%@",model.comments_count,model.reposts_count);
+    cell.commentsCount.font = [UIFont systemFontOfSize:10];
+    cell.repostsCount.font = [UIFont systemFontOfSize:10];
+    [cell.commentsCount setText:[NSString stringWithFormat:@"%@",model.comments_count]];
+    [cell.repostsCount setText:[NSString stringWithFormat:@"%@",model.reposts_count]];
+
+//    cell.retweetView.hidden = YES;
+//    //cell.retweetLabel.hidden = YES;
+//    cell.myscrollview.hidden = YES;
+//    //cell.rescrollview.hidden = YES;
     if (model.pic_urls.count>0)
     {
-        cell.tweetImage.hidden = NO;
-        [cell.tweetImage sd_setImageWithURL:[NSURL URLWithString:[model.pic_urls firstObject]]];
-        NSLog(@"pic:%@",[model.pic_urls firstObject]);
-        cell.tweetImage.frame = CGRectMake(10, 55+model.size.height+10+10, 80, 80);
-        [cell.retweetView setFrame:CGRectMake(0, 55+model.size.height+10+90, 320, 160)];
-    }else if (model.model.size.height>0)
+        cell.retweetView.hidden = YES;
+        cell.rescrollview.hidden = YES;
+        cell.myscrollview.hidden = NO;
+        cell.myscrollview.frame = CGRectMake(10, 55+model.size.height+10+10, 300, 80);
+        [self addPic:model.pic_urls toView:cell.myscrollview];
+        cell.myscrollview.contentSize = CGSizeMake(85*model.pic_urls.count+85, 0);
+        
+        [cell.controlview setFrame:CGRectMake(0, 55+model.size.height+10+90, 320, 160)];
+    }else if(model.model.size.height>0)
     {
+        cell.myscrollview.hidden = YES;
+        //cell.imageView.hidden = YES;
         cell.retweetView.hidden = NO;
+        cell.retweetLabel.hidden = NO;
+        cell.retweetLabel.text = model.model.text;
+        NSLog(@"text:%@",model.model.text);
         cell.retweetLabel.font = [UIFont systemFontOfSize:16];
         cell.retweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
         cell.retweetLabel.numberOfLines = 0;
         //cell.retweetLabel.frame = CGRectMake(10, 70, model.size.width, model.size.height);
-        cell.sourceLabel.font = [UIFont systemFontOfSize:12];
+//        cell.retweetLabel.frame = CGRectMake(10, 0, model.model.size.width, model.model.size.height);
         
-        cell.retweetLabel.text = [NSString stringWithFormat:@"@%@:%@",model.model.user.name,model.model.text];
         if (model.model.pic_urls.count>0)
         {
-            cell.retweetImage.hidden = NO;
-            [cell.tweetImage sd_setImageWithURL:[NSURL URLWithString:[model.model.pic_urls firstObject]]];
-            NSLog(@"retweet pic:%@",[model.model.pic_urls firstObject]);
-            cell.retweetView.frame = CGRectMake(0, 55+model.size.height+10+10,320,55+model.size.height+10+10+40+80);
-            cell.retweetLabel.frame = CGRectMake(10, 0, model.model.size.width, model.model.size.height);
-            cell.retweetImage.frame = CGRectMake(10, model.model.size.height+80, 40, 40);
+            cell.rescrollview.hidden = NO;
 
-            [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10+model.model.size.height+100, 300, 40)];
+            cell.retweetView.frame = CGRectMake(0, 55+model.size.height+10+10,320,10+model.model.size.height+10+10+80);
+            
+            cell.retweetLabel.frame = CGRectMake(10, 0, model.model.size.width, model.model.size.height);
+            
+            cell.rescrollview.frame = CGRectMake(10, model.model.size.height+10, 300, 80);
+            [self addPic:model.model.pic_urls toView:cell.rescrollview];
+            cell.rescrollview.contentSize = CGSizeMake(85*model.model.pic_urls.count+85, 0);
+            
+            [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10+model.model.size.height+110, 300, 40)];
         }else
         {
-            cell.retweetImage.hidden = YES;
+            cell.rescrollview.hidden = YES;
             cell.retweetView.frame = CGRectMake(0, 55+model.size.height+10+10,320,model.model.size.height+10);
             cell.retweetLabel.frame = CGRectMake(10, 0, model.model.size.width, model.model.size.height);
-            [cell.controlview setFrame:CGRectMake(10, 55+model.model.size.height+10+10+model.model.size.height+10, 300, 40)];
+            [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10+model.model.size.height+10, 300, 40)];
         }
     }else
     {
+        cell.retweetLabel.hidden = YES;
         cell.retweetView.hidden = YES;
-        [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+40+5, 300, 40)];
+        cell.myscrollview.hidden = YES;
+        cell.rescrollview.hidden = YES;
+        [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10, 300, 40)];
     }
-    
     return cell;
 }
-
+-(void)addPic:(NSArray *)subArr toView:(UIScrollView *)myview
+{
+    for (int i=0; i<subArr.count; i++)
+    {
+        UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
+        [image sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
+        [myview addSubview:image];
+    }
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
     NSInteger count = model.pic_urls.count;
     if (count >0)
     {
-        int customHeight = 55+model.size.height+10+80+40+60;
+        int customHeight = 55+model.size.height+10+80+40+10;
         return customHeight;
     }else if(model.model.size.height>0)
     {
         if (model.model.pic_urls.count>0)
         {
-            return 55+model.size.height+10+40+55+model.model.size.height+10+40+40;
+            return 55+model.size.height+10+40+10+model.model.size.height+10+80+20;
         }else
-            return 55+model.size.height+10+40+55+model.model.size.height+10+40;
+            return 55+model.size.height+10+40+10+model.model.size.height+10;
     }else
     {
         return 55+model.size.height+10+40;

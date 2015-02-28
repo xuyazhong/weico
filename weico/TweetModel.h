@@ -23,6 +23,8 @@
 @property (nonatomic,copy) NSString *rid;
 @property (nonatomic,strong) UserModel *user;
 @property (nonatomic,strong) TweetModel *model;
+@property (nonatomic,copy) NSString *reposts_count;
+@property (nonatomic,copy) NSString *comments_count;
 
 //储存微博正文的size
 @property (nonatomic,assign) CGSize size;

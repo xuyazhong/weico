@@ -17,10 +17,14 @@
 @property (strong, nonatomic)  UIButton *forward;
 @property (strong, nonatomic)  UIButton *comment;
 @property (strong, nonatomic)  UIButton *like;
-@property (strong, nonatomic)  UIImageView *tweetImage;
+//@property (strong, nonatomic)  UIImageView *tweetImage;
 @property (strong, nonatomic)  UIView *controlview;
 @property (strong, nonatomic)  UIView *retweetView;
 @property (strong, nonatomic)  UILabel *retweetLabel;
-@property (strong, nonatomic)  UIImageView *retweetImage;
+//@property (strong, nonatomic)  UIImageView *retweetImage;
+@property (strong, nonatomic)  UIScrollView *myscrollview;
+@property (strong, nonatomic)  UIScrollView *rescrollview;
+@property (strong, nonatomic)  UILabel *repostsCount;
+@property (strong, nonatomic)  UILabel *commentsCount;
 
 @end
