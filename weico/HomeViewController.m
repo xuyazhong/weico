@@ -15,7 +15,7 @@
 #import "ListsModel.h"
 #import "UpdateTweetVC.h"
 #import "RepostViewController.h"
-
+#import "DetailViewController.h"
 
 @interface HomeViewController ()
 {
@@ -326,11 +326,15 @@
 #pragma mark - tableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
+//    RepostViewController *reposter = [[RepostViewController alloc]init];
+//    reposter.model = model;
+//    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:reposter];
+//    [self presentViewController:nvc animated:YES completion:nil];
+    DetailViewController *detail = [[DetailViewController alloc]init];
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
-    RepostViewController *reposter = [[RepostViewController alloc]init];
-    reposter.model = model;
-    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:reposter];
-    [self presentViewController:nvc animated:YES completion:nil];
+    detail.model = model;
+    [self presentViewController:detail animated:YES completion:nil];
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

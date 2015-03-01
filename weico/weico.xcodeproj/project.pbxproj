@@ -87,6 +87,9 @@
 		BC09732E1AA01654007E0F06 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09731C1AA01654007E0F06 /* UIImageView+HighlightedWebCache.m */; };
 		BC09732F1AA01654007E0F06 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09731E1AA01654007E0F06 /* UIImageView+WebCache.m */; };
 		BC0973301AA01654007E0F06 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0973201AA01654007E0F06 /* UIView+WebCacheOperation.m */; };
+		BC0BA5A81AA2F16200A0C221 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0BA5A71AA2F16200A0C221 /* DetailViewController.m */; };
+		BC0BA5AB1AA2F61800A0C221 /* MyDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0BA5AA1AA2F61800A0C221 /* MyDetailCell.m */; };
+		BC0BA5AD1AA2F62800A0C221 /* MyDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC0BA5AC1AA2F62800A0C221 /* MyDetailCell.xib */; };
 		BC298FC41A9EAC02009C67BE /* RepostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC298FC31A9EAC02009C67BE /* RepostViewController.m */; };
 		BC298FF91A9F1909009C67BE /* MyString.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC298FFB1A9F1909009C67BE /* MyString.strings */; };
 		BC29900A1A9F20AF009C67BE /* DeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2990091A9F20AF009C67BE /* DeviceManager.m */; };
@@ -274,6 +277,11 @@
 		BC09731E1AA01654007E0F06 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		BC09731F1AA01654007E0F06 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		BC0973201AA01654007E0F06 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
+		BC0BA5A61AA2F16200A0C221 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		BC0BA5A71AA2F16200A0C221 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		BC0BA5A91AA2F61800A0C221 /* MyDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDetailCell.h; sourceTree = "<group>"; };
+		BC0BA5AA1AA2F61800A0C221 /* MyDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDetailCell.m; sourceTree = "<group>"; };
+		BC0BA5AC1AA2F62800A0C221 /* MyDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyDetailCell.xib; sourceTree = "<group>"; };
 		BC298FC11A9EAB91009C67BE /* weico-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "weico-Prefix.pch"; sourceTree = "<group>"; };
 		BC298FC21A9EAC02009C67BE /* RepostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepostViewController.h; path = ../RepostViewController.h; sourceTree = "<group>"; };
 		BC298FC31A9EAC02009C67BE /* RepostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RepostViewController.m; path = ../RepostViewController.m; sourceTree = "<group>"; };
@@ -604,6 +612,9 @@
 				8729E78C1A99CD1C00D0DE26 /* TweetCell.m */,
 				8729E78F1A99CD1C00D0DE26 /* UpdateTweetVC.h */,
 				8729E7901A99CD1C00D0DE26 /* UpdateTweetVC.m */,
+				BC0BA5A91AA2F61800A0C221 /* MyDetailCell.h */,
+				BC0BA5AA1AA2F61800A0C221 /* MyDetailCell.m */,
+				BC0BA5AC1AA2F62800A0C221 /* MyDetailCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -635,6 +646,8 @@
 				BCFD07E91A9F564400C21936 /* CommentMeViewController.m */,
 				BCFD07EB1A9F564C00C21936 /* FavListViewController.h */,
 				BCFD07EC1A9F564C00C21936 /* FavListViewController.m */,
+				BC0BA5A61AA2F16200A0C221 /* DetailViewController.h */,
+				BC0BA5A71AA2F16200A0C221 /* DetailViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -823,6 +836,7 @@
 				BCFD07D11A9F3C8100C21936 /* tab_user_home_special_selected@3x.png in Resources */,
 				87F0592E1A9F71A30087FB8B /* myTabBar.png in Resources */,
 				BCFD07C81A9F3C8100C21936 /* tab_user_at_selected@2x.png in Resources */,
+				BC0BA5AD1AA2F62800A0C221 /* MyDetailCell.xib in Resources */,
 				BCFD07CB1A9F3C8100C21936 /* tab_user_comments_selected@3x.png in Resources */,
 				BC0581481AA1A397008DD754 /* t_repost@2x.png in Resources */,
 				BCFD07C31A9F3C8100C21936 /* tab_favlist_selected@2x.png in Resources */,
@@ -886,6 +900,7 @@
 				87CA5BF91A9980F700E1C3BA /* HttpRequestDemoTableViewController.m in Sources */,
 				8729E5391A99CC9200D0DE26 /* AFHTTPRequestOperationManager.m in Sources */,
 				8729E79A1A99CD1C00D0DE26 /* UpdateTweetVC.m in Sources */,
+				BC0BA5A81AA2F16200A0C221 /* DetailViewController.m in Sources */,
 				8729E5581A99CC9E00D0DE26 /* UIProgressView+AFNetworking.m in Sources */,
 				BC09732E1AA01654007E0F06 /* UIImageView+HighlightedWebCache.m in Sources */,
 				BCFD07E71A9F563B00C21936 /* AtMeViewController.m in Sources */,
@@ -897,6 +912,7 @@
 				8729E53F1A99CC9200D0DE26 /* AFURLResponseSerialization.m in Sources */,
 				BC0973301AA01654007E0F06 /* UIView+WebCacheOperation.m in Sources */,
 				8729E7991A99CD1C00D0DE26 /* TweetModel.m in Sources */,
+				BC0BA5AB1AA2F61800A0C221 /* MyDetailCell.m in Sources */,
 				87CA5BC91A99806000E1C3BA /* AppDelegate.m in Sources */,
 				8729E5231A99CC7E00D0DE26 /* MJRefreshHeaderView.m in Sources */,
 				BC0973221AA01654007E0F06 /* NSData+ImageContentType.m in Sources */,
