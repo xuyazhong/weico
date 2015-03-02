@@ -15,6 +15,8 @@
 #import "DetailCommentCell.h"
 #import "DetailRepostCell.h"
 #import "UIImageView+WebCache.h"
+#import "RepostViewController.h"
+#import "CommentViewController.h"
 
 
 @interface DetailViewController ()
@@ -331,11 +333,17 @@
 }
 -(void)repostAction
 {
-    
+    RepostViewController *repost = [[RepostViewController alloc]init];
+    repost.model = _model;
+    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:repost];
+    [self presentViewController:nvc animated:YES completion:nil];
 }
 -(void)commentAction
 {
-    
+    CommentViewController *comment = [[CommentViewController alloc]init];
+    comment.model = _model;
+    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:comment];
+    [self presentViewController:nvc animated:YES completion:nil];
 }
 -(void)cancelAction
 {

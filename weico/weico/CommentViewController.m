@@ -1,29 +1,35 @@
 //
-//  RepostViewController.m
+//  CommentViewController.m
 //  weico
 //
-//  Created by xuyazhong on 15/2/25.
+//  Created by xuyazhong on 15/3/2.
 //  Copyright (c) 2015年 xuyazhong. All rights reserved.
 //
 
-#import "RepostViewController.h"
+#import "CommentViewController.h"
 #import "AFNetworking.h"
 #import "ShareToken.h"
+#import "RepostViewController.h"
 
-
-@interface RepostViewController ()
+@interface CommentViewController ()
 {
     UITextField *tweet;
 }
 @end
 
-@implementation RepostViewController
+@implementation CommentViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self createUI];
     // Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 -(void)createUI
 {
@@ -32,15 +38,19 @@
     repostBtn.frame = CGRectMake(0, 0, 80, 40);
     [repostBtn setTitle:@"转发" forState:UIControlStateNormal];
     [repostBtn addTarget:self action:@selector(repostAction) forControlEvents:UIControlEventTouchUpInside];
+    [repostBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithCustomView:repostBtn];
     self.navigationItem.rightBarButtonItem = right;
     
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelBtn.frame = CGRectMake(0, 0, 80, 40);
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *left = [[UIBarButtonItem alloc]initWithCustomView:cancelBtn];
     self.navigationItem.leftBarButtonItem = left;
+    
+    
     tweet = [[UITextField alloc]initWithFrame:CGRectMake(0,0, 320, 150)];
     [tweet becomeFirstResponder];
     tweet.delegate = self;
@@ -53,28 +63,17 @@
 }
 -(void)repostAction
 {
-    NSString *str = tweet.text;
-    if (str.length == 0)
-    {
-        str = @"repost";
-    }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",_model.tid,@"id",str,@"status", nil];
-    [manager POST:kURLRepost parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
-    {
-        NSLog(@"success:%@",responseObject);
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error)
-    {
-        NSLog(@"failed:%@",error.localizedDescription);
-    }];
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",_model.tid,@"id",tweet.text,@"comment", nil];
+    [manager POST:kURLCreateComment parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"success:%@",responseObject);
+         [self dismissViewControllerAnimated:YES completion:nil];
+     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@"failed:%@",error.localizedDescription);
+     }];
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 /*
 #pragma mark - Navigation
 
@@ -84,7 +83,6 @@
     // Pass the selected object to the new view controller.
 }
 */
-
 #pragma mark - textfieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {

@@ -46,6 +46,7 @@
 		8729E79A1A99CD1C00D0DE26 /* UpdateTweetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8729E7901A99CD1C00D0DE26 /* UpdateTweetVC.m */; };
 		8729E79B1A99CD1C00D0DE26 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8729E7921A99CD1C00D0DE26 /* UserModel.m */; };
 		8729E7AE1A9B7E3B00D0DE26 /* CommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8729E7AD1A9B7E3B00D0DE26 /* CommentVC.m */; };
+		875582391AA4B94000777CF8 /* CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 875582381AA4B94000777CF8 /* CommentViewController.m */; };
 		87CA5BB91A99806000E1C3BA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5BB81A99806000E1C3BA /* Foundation.framework */; };
 		87CA5BBB1A99806000E1C3BA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5BBA1A99806000E1C3BA /* CoreGraphics.framework */; };
 		87CA5BBD1A99806000E1C3BA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87CA5BBC1A99806000E1C3BA /* UIKit.framework */; };
@@ -207,6 +208,8 @@
 		8729E7921A99CD1C00D0DE26 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserModel.m; path = ../UserModel.m; sourceTree = "<group>"; };
 		8729E7AC1A9B7E3B00D0DE26 /* CommentVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentVC.h; path = ../CommentVC.h; sourceTree = "<group>"; };
 		8729E7AD1A9B7E3B00D0DE26 /* CommentVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommentVC.m; path = ../CommentVC.m; sourceTree = "<group>"; };
+		875582371AA4B94000777CF8 /* CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentViewController.h; sourceTree = "<group>"; };
+		875582381AA4B94000777CF8 /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
 		87CA5BB51A99806000E1C3BA /* weico.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = weico.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87CA5BB81A99806000E1C3BA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		87CA5BBA1A99806000E1C3BA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -615,8 +618,6 @@
 			children = (
 				8729E78B1A99CD1C00D0DE26 /* TweetCell.h */,
 				8729E78C1A99CD1C00D0DE26 /* TweetCell.m */,
-				8729E78F1A99CD1C00D0DE26 /* UpdateTweetVC.h */,
-				8729E7901A99CD1C00D0DE26 /* UpdateTweetVC.m */,
 				BC95B9791AA4811B00AB0D86 /* DetailRepostCell.h */,
 				BC95B97A1AA4811B00AB0D86 /* DetailRepostCell.m */,
 				BC95B97C1AA4813300AB0D86 /* DetailRepostCell.xib */,
@@ -656,6 +657,10 @@
 				BCFD07EC1A9F564C00C21936 /* FavListViewController.m */,
 				BC0BA5A61AA2F16200A0C221 /* DetailViewController.h */,
 				BC0BA5A71AA2F16200A0C221 /* DetailViewController.m */,
+				875582371AA4B94000777CF8 /* CommentViewController.h */,
+				875582381AA4B94000777CF8 /* CommentViewController.m */,
+				8729E78F1A99CD1C00D0DE26 /* UpdateTweetVC.h */,
+				8729E7901A99CD1C00D0DE26 /* UpdateTweetVC.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -873,6 +878,7 @@
 				8729E7961A99CD1C00D0DE26 /* MeViewController.m in Sources */,
 				BC0973211AA01654007E0F06 /* MKAnnotationView+WebCache.m in Sources */,
 				BCFD07ED1A9F564C00C21936 /* FavListViewController.m in Sources */,
+				875582391AA4B94000777CF8 /* CommentViewController.m in Sources */,
 				BC0973281AA01654007E0F06 /* SDWebImageManager.m in Sources */,
 				BC29900D1A9F20F4009C67BE /* NetManager.m in Sources */,
 				8729E53C1A99CC9200D0DE26 /* AFSecurityPolicy.m in Sources */,
