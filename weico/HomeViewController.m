@@ -326,11 +326,6 @@
 #pragma mark - tableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
-//    RepostViewController *reposter = [[RepostViewController alloc]init];
-//    reposter.model = model;
-//    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:reposter];
-//    [self presentViewController:nvc animated:YES completion:nil];
     DetailViewController *detail = [[DetailViewController alloc]init];
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
     detail.model = model;
@@ -363,7 +358,7 @@
     cell.timeLabel.font = [UIFont systemFontOfSize:12];
     cell.sourceLabel.text = [NSString stringWithFormat:@"来自%@",model.source];
     cell.sourceLabel.font = [UIFont systemFontOfSize:12];
-    NSLog(@"comment:%@&&repost:%@",model.comments_count,model.reposts_count);
+    //NSLog(@"comment:%@&&repost:%@",model.comments_count,model.reposts_count);
     cell.commentsCount.font = [UIFont systemFontOfSize:10];
     cell.repostsCount.font = [UIFont systemFontOfSize:10];
     [cell.commentsCount setText:[NSString stringWithFormat:@"%@",model.comments_count]];
@@ -390,7 +385,7 @@
         cell.retweetView.hidden = NO;
         cell.retweetLabel.hidden = NO;
         cell.retweetLabel.text = model.model.text;
-        NSLog(@"text:%@",model.model.text);
+        //NSLog(@"text:%@",model.model.text);
         cell.retweetLabel.font = [UIFont systemFontOfSize:16];
         cell.retweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
         cell.retweetLabel.numberOfLines = 0;

@@ -9,20 +9,26 @@
 #import "DetailViewController.h"
 #import "DeviceManager.h"
 #import "TweetCell.h"
-
-
+#import "UIImageView+WebCache.h"
+#import "AFNetworking.h"
+#import "ShareToken.h"
+#import "DetailCommentCell.h"
+#import "DetailRepostCell.h"
+#import "UIImageView+WebCache.h"
 
 
 @interface DetailViewController ()
 {
     NSMutableArray *_dataArray;
     NSMutableArray *currentArray;
-    NSMutableArray *_data1;
-    NSMutableArray *_data2;
-    NSMutableArray *_data3;
-    NSMutableArray *tableviewArray;
     UILabel *selectedLabel;
     UIScrollView *myscrollview;
+    UITableView *mytableview1;
+    UITableView *mytableview2;
+    UITableView *mytableview3;
+    CGFloat _repostBtnX;
+    CGFloat _commentBtnX;
+    CGFloat _tweetBtnX;
 }
 @end
 
@@ -31,42 +37,162 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     _dataArray = [[NSMutableArray alloc]init];
     _data1 = [[NSMutableArray alloc]init];
     _data2 = [[NSMutableArray alloc]init];
     _data3 = [[NSMutableArray alloc]initWithObjects:_model, nil];
-    currentArray = [[NSMutableArray alloc]init];
-    tableviewArray = [[NSMutableArray alloc]init];
     [_dataArray addObject:_data1];
     [_dataArray addObject:_data2];
     [_dataArray addObject:_data3];
     
-    myscrollview = [[UIScrollView alloc]initWithFrame:CGRectMake(0,40,[DeviceManager currentScreenSize].width, [DeviceManager currentScreenSize].height-80)];
+    myscrollview = [[UIScrollView alloc]initWithFrame:CGRectMake(0,104,[DeviceManager currentScreenSize].width, [DeviceManager currentScreenSize].height-114)];
     myscrollview.contentSize = CGSizeMake(320*3, 0);
     myscrollview.contentOffset = CGPointMake(320, 0);
     myscrollview.pagingEnabled = YES;
-    UITableView *mytableview1 = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, [DeviceManager currentScreenSize].width, [DeviceManager currentScreenSize].height-80)];
+    mytableview1 = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, [DeviceManager currentScreenSize].width, [DeviceManager currentScreenSize].height-104)];
     mytableview1.delegate = self;
     mytableview1.dataSource = self;
-    UITableView *mytableview2 = [[UITableView alloc]initWithFrame:CGRectMake(320, 0, [DeviceManager currentScreenSize].width, [DeviceManager currentScreenSize].height-80)];
+    mytableview1.tag = 201;
+    mytableview2 = [[UITableView alloc]initWithFrame:CGRectMake(320, 0, [DeviceManager currentScreenSize].width, [DeviceManager currentScreenSize].height-104)];
     mytableview2.delegate = self;
     mytableview2.dataSource = self;
-    UITableView *mytableview3 = [[UITableView alloc]initWithFrame:CGRectMake(640, 0, [DeviceManager currentScreenSize].width, [DeviceManager currentScreenSize].height-80)];
+    mytableview2.tag = 202;
+    mytableview3 = [[UITableView alloc]initWithFrame:CGRectMake(640, 0, [DeviceManager currentScreenSize].width, [DeviceManager currentScreenSize].height-104)];
     mytableview3.delegate = self;
     mytableview3.dataSource = self;
+    mytableview3.tag = 203;
     [myscrollview addSubview:mytableview1];
     [myscrollview addSubview:mytableview2];
     [myscrollview addSubview:mytableview3];
-    [tableviewArray addObject:mytableview1];
-    [tableviewArray addObject:mytableview2];
-    [tableviewArray addObject:mytableview3];
+    myscrollview.delegate = self;
     [self.view addSubview:myscrollview];
     
     [self addHeaderWithFrame:CGRectMake(0,64 , [DeviceManager currentScreenSize].width, 40)];
     [self addFooterWithFrame:CGRectMake(0, [DeviceManager currentScreenSize].height-40,[DeviceManager currentScreenSize].width, 40)];
     // Do any additional setup after loading the view.
+    [self loadTableView1];
+    [self loadTableView2];
+    [self loadTableView3];
 }
+-(void)loadTableView1
+{
+    if (_data1.count==0)
+    {
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",_model.tid,@"id", nil];
+        NSLog(@"dict:%@",dict);
+        [manager GET:kURLRepostList parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
+         {
+             
+             NSArray *subArr = [responseObject objectForKey:@"reposts"];
+             //NSLog(@"reposts subArr:%@",subArr);
+             for (NSDictionary *subDict in subArr)
+             {
+                 TweetModel *model = [[TweetModel alloc]init];
+                 model.tid = [subDict objectForKey:@"id"];
+                 model.text = [subDict objectForKey:@"text"];
+                 model.created_at = [self getTime:[subDict objectForKey:@"created_at"]];
+                 NSDictionary *userDict = [subDict objectForKey:@"user"];
+                 UserModel *user = [[UserModel alloc]init];
+                 user.name = [userDict objectForKey:@"name"];
+                 user.uid = [userDict objectForKey:@"id"];
+                 user.profile_image_url = [userDict objectForKey:@"profile_image_url"];
+                 model.user = user;
+                 [_data1 addObject:model];
+             }
+             NSLog(@"_data1:%@",_data1);
+             //[myJSON setDictionary:responseObject];
+             [mytableview1 reloadData];
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+         {
+             NSLog(@"failed:%@",error.localizedDescription);
+         }];
+        
+    }
+    
+    [mytableview1 reloadData];
+    
+}
+-(void)loadTableView2
+{
+    if (_data2.count==0)
+    {
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",_model.tid,@"id", nil];
+        NSLog(@"dict:%@",dict);
+        [manager GET:kURLCommentShow parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
+         {
+             NSArray *subArr = [responseObject objectForKey:@"comments"];
+             //NSLog(@"comment subArr:%@",subArr);
+             for (NSDictionary *subDict in subArr)
+             {
+                 TweetModel *model = [[TweetModel alloc]init];
+                 model.tid = [subDict objectForKey:@"id"];
+                 model.text = [subDict objectForKey:@"text"];
 
+                 model.created_at = [self getTime:[subDict objectForKey:@"created_at"]];
+                 NSDictionary *userDict = [subDict objectForKey:@"user"];
+                 UserModel *user = [[UserModel alloc]init];
+                 user.name = [userDict objectForKey:@"name"];
+                 user.uid = [userDict objectForKey:@"id"];
+                 user.profile_image_url = [userDict objectForKey:@"profile_image_url"];
+                 model.user = user;
+                 [_data2 addObject:model];
+             }
+             NSLog(@"_data2:%@",_data2);
+             [mytableview2 reloadData];
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+         {
+             NSLog(@"failed:%@",error.localizedDescription);
+         }];
+        //[self getJSONWithURLString:kURLCommentShow andArray:_data2];
+        //NSLog(@"comment json:%@",myJSON);
+        
+    }
+    
+    [mytableview2 reloadData];
+}
+-(NSString *)getTime:(NSString *)createTime
+{
+    /*
+     计算时间
+     */
+    //设置时间
+    NSDateFormatter *iosDateFormater=[[NSDateFormatter alloc]init];
+    iosDateFormater.dateFormat=@"EEE MMM d HH:mm:ss Z yyyy";
+    
+    //必须设置，否则无法解析
+    iosDateFormater.locale=[[NSLocale alloc]initWithLocaleIdentifier:@"en_US"];
+    NSDate *date=[iosDateFormater dateFromString:createTime];
+    
+    //目的格式
+    NSDateFormatter *resultFormatter=[[NSDateFormatter alloc]init];
+    [resultFormatter setDateFormat:@"HH:mm"];
+    
+    return [resultFormatter stringFromDate:date];
+}
+-(void)loadTableView3
+{
+    [mytableview3 reloadData];
+}
+-(void)getJSONWithURLString:(NSString *)url andArray:(NSMutableArray *)arr
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",_model.tid,@"id", nil];
+    NSLog(@"dict:%@",dict);
+    [manager GET:url parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+        NSLog(@"success:%@",responseObject);
+        //myJSON = responseObject;
+        
+        //[myJSON setDictionary:responseObject];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+    {
+        NSLog(@"failed:%@",error.localizedDescription);
+    }];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -85,7 +211,7 @@
 -(void)addHeaderWithFrame:(CGRect)frame
 {
     UIView *headerView = [[UIView alloc]initWithFrame:frame];
-    //headerView.backgroundColor = [UIColor greenColor];
+    headerView.backgroundColor = [UIColor whiteColor];
     CGFloat btnWidth = (frame.size.width-20)/3;
     //NSLog(@"btnwidth:%f",btnWidth);
     UILabel *repostCount = [[UILabel alloc]initWithFrame:CGRectMake(10, 3, 40, 13)];
@@ -97,6 +223,7 @@
     [repostBtn setTitle:@"转发" forState:UIControlStateNormal];
     [repostBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [repostBtn setFrame:CGRectMake(10, 16, 40, 13)];
+    _repostBtnX = 10;
     [repostBtn addTarget:self action:@selector(switchList:) forControlEvents:UIControlEventTouchUpInside];
     repostBtn.titleLabel.font = [UIFont systemFontOfSize:13];
     repostBtn.tag = 101;
@@ -111,6 +238,7 @@
     [commentBtn setTitle:@"评论" forState:UIControlStateNormal];
     [commentBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [commentBtn setFrame:CGRectMake(10+btnWidth, 16, 40, 13)];
+    _commentBtnX = 10+btnWidth;
     [commentBtn addTarget:self action:@selector(switchList:) forControlEvents:UIControlEventTouchUpInside];
     commentBtn.titleLabel.font = [UIFont systemFontOfSize:13];;
     commentBtn.tag = 102;
@@ -130,6 +258,7 @@
     detailBtn.titleLabel.font = [UIFont systemFontOfSize:13];
     [detailBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [detailBtn setFrame:CGRectMake(10+btnWidth+btnWidth, 16, 40, 13)];
+    _tweetBtnX = 10+btnWidth+btnWidth;
     [detailBtn addTarget:self action:@selector(switchList:) forControlEvents:UIControlEventTouchUpInside];
     detailBtn.tag = 103;
     [headerView addSubview:detailBtn];
@@ -153,7 +282,12 @@
     {
         point = CGPointMake(0, 0);
     }
+    
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.3];
     myscrollview.contentOffset = point;
+    [UIView commitAnimations];
     
 }
 -(void)addLabelWithFrameX:(CGFloat)x toView:(UIView *)view
@@ -167,7 +301,7 @@
 {
     
     UIView *footerView = [[UIView alloc]initWithFrame:frame];
-    //footerView.backgroundColor = [UIColor yellowColor];
+    footerView.backgroundColor = [UIColor whiteColor];
     CGFloat btnWidth = 60;
     
     UIButton *repostBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -211,19 +345,224 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[_dataArray objectAtIndex:section] count];
+    if (tableView.tag == 201)
+    {
+        NSLog(@"table1:%d",[_data1 count]);
+        return [_data1 count];
+    }else if (tableView.tag == 202)
+    {
+        NSLog(@"table2:%d",[_data2 count]);
+        return [_data2 count];
+    }else if (tableView.tag == 203)
+    {
+        return 1;
+    }else
+        return 0;
+
 }
-// Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
-// Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellID = @"mycell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    NSLog(@"mytableviewtag:%d",tableView.tag);
+    if (tableView.tag == 201)
+    {
+        static NSString *cellID = @"repost";
+        NSLog(@"转发");
+        DetailRepostCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        if (cell == nil)
+        {
+            cell = [[[NSBundle mainBundle]loadNibNamed:@"DetailRepostCell" owner:nil options:nil] lastObject];
+        }
+        if (_data1.count>0)
+        {
+            TweetModel *model = [_data1 objectAtIndex:indexPath.row];
+            [cell.headimg sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
+            cell.nickname.text = model.user.name;
+            cell.tweetContent.text = model.text;
+            cell.createTime.text = model.created_at;
+        }
+        
+        return cell;
+    }else if (tableView.tag == 202)
+    {
+        static NSString *cellID2 = @"comment";
+        NSLog(@"评论");
+        DetailCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2];
+        if (cell == nil)
+        {
+            cell = [[[NSBundle mainBundle]loadNibNamed:@"DetailCommentCell" owner:nil options:nil] lastObject];
+        }
+        if (_data2.count>0)
+        {
+            TweetModel *model = [_data2 objectAtIndex:indexPath.row];
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
+            cell.nickname.text = model.text;
+            cell.createTime.text = model.created_at;
+            cell.tweetContent.text = model.text;
+        }
+        
+        return cell;
+    }else if(tableView.tag == 203)
+    {
+        NSLog(@"微博");
+        
+        return [self getMytableView3:mytableview3];
+    }
+    else
+    {
+        NSLog(@"nil return");
+        return nil;
+    }
+    
+    
+}
+-(UITableViewCell *)getMytableView3:(UITableView *)tableView
+{
+    static NSString *cellID3 = @"custom";
+    TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
+        cell = [[TweetCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID3];
+    }
+    TweetModel *model = [self model];
+    [cell.userInfo sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
+    cell.tweetLabel.text = model.text;
+    cell.tweetLabel.font = [UIFont systemFontOfSize:16];
+    cell.tweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    cell.tweetLabel.numberOfLines = 0;
+    cell.tweetLabel.frame = CGRectMake(10, 70, model.size.width, model.size.height);
+    cell.nickName.text = model.user.name;
+    cell.timeLabel.text = model.created_at;
+    cell.timeLabel.font = [UIFont systemFontOfSize:12];
+    cell.sourceLabel.text = [NSString stringWithFormat:@"来自%@",model.source];
+    cell.sourceLabel.font = [UIFont systemFontOfSize:12];
+    NSLog(@"comment:%@&&repost:%@",model.comments_count,model.reposts_count);
+    cell.commentsCount.font = [UIFont systemFontOfSize:10];
+    cell.repostsCount.font = [UIFont systemFontOfSize:10];
+    [cell.commentsCount setText:[NSString stringWithFormat:@"%@",model.comments_count]];
+    [cell.repostsCount setText:[NSString stringWithFormat:@"%@",model.reposts_count]];
+    if (model.pic_urls.count>0)
+    {
+        cell.retweetView.hidden = YES;
+        cell.rescrollview.hidden = YES;
+        cell.myscrollview.hidden = NO;
+        cell.myscrollview.frame = CGRectMake(10, 55+model.size.height+10+10, 300, 80);
+        [self addPic:model.pic_urls toView:cell.myscrollview];
+        cell.myscrollview.contentSize = CGSizeMake(85*model.pic_urls.count+85, 0);
+        
+        [cell.controlview setFrame:CGRectMake(0, 55+model.size.height+10+90, 320, 160)];
+    }else if(model.model.size.height>0)
+    {
+        cell.myscrollview.hidden = YES;
+        //cell.imageView.hidden = YES;
+        cell.retweetView.hidden = NO;
+        cell.retweetLabel.hidden = NO;
+        cell.retweetLabel.text = model.model.text;
+        NSLog(@"text:%@",model.model.text);
+        cell.retweetLabel.font = [UIFont systemFontOfSize:16];
+        cell.retweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        cell.retweetLabel.numberOfLines = 0;
+        
+        if (model.model.pic_urls.count>0)
+        {
+            cell.rescrollview.hidden = NO;
+            
+            cell.retweetView.frame = CGRectMake(0, 55+model.size.height+10+10,320,10+model.model.size.height+10+10+80);
+            
+            cell.retweetLabel.frame = CGRectMake(10, 0, model.model.size.width, model.model.size.height);
+            
+            cell.rescrollview.frame = CGRectMake(10, model.model.size.height+10, 300, 80);
+            [self addPic:model.model.pic_urls toView:cell.rescrollview];
+            cell.rescrollview.contentSize = CGSizeMake(85*model.model.pic_urls.count+85, 0);
+            
+            [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10+model.model.size.height+110, 300, 40)];
+        }else
+        {
+            cell.rescrollview.hidden = YES;
+            cell.retweetView.frame = CGRectMake(0, 55+model.size.height+10+10,320,model.model.size.height+10);
+            cell.retweetLabel.frame = CGRectMake(10, 0, model.model.size.width, model.model.size.height);
+            [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10+model.model.size.height+10, 300, 40)];
+        }
+    }else
+    {
+        cell.retweetLabel.hidden = YES;
+        cell.retweetView.hidden = YES;
+        cell.myscrollview.hidden = YES;
+        cell.rescrollview.hidden = YES;
+        [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10, 300, 40)];
     }
     return cell;
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TweetModel *model;
+    if (tableView.tag == 201)
+    {
+        model = [_data1 objectAtIndex:indexPath.row];
+    }else if (tableView.tag == 202)
+    {
+        model = [_data2 objectAtIndex:indexPath.row];
+    }else if (tableView.tag == 203)
+    {
+         model = [self model];
+    }
+    
+    NSInteger count = model.pic_urls.count;
+    if (count >0)
+    {
+        int customHeight = 55+model.size.height+10+80+40+10;
+        return customHeight;
+    }else if(model.model.size.height>0)
+    {
+        if (model.model.pic_urls.count>0)
+        {
+            return 55+model.size.height+10+40+10+model.model.size.height+10+80+20;
+        }else
+            return 55+model.size.height+10+40+10+model.model.size.height+10;
+    }else
+    {
+        return 55+model.size.height+10+40;
+    }
+    
+        return 0;
+    /*
+    
+     */
+}
+-(void)addPic:(NSArray *)subArr toView:(UIScrollView *)myview
+{
+    for (int i=0; i<subArr.count; i++)
+    {
+        UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
+        [image sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
+        [myview addSubview:image];
+    }
+}
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    CGRect frame = selectedLabel.frame;
+    
+    
+    CGPoint point = scrollView.contentOffset;
+    if (point.x==0)
+    {
+        frame.origin.x = _repostBtnX;
+    }
+    if (point.x==320)
+    {
+        frame.origin.x = _commentBtnX;
+    }
+    if (point.x==640)
+    {
+        frame.origin.x = _tweetBtnX;
+    }
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.3];
+    selectedLabel.frame = frame;
+    [UIView commitAnimations];
+    
+}
+
+
+
 @end

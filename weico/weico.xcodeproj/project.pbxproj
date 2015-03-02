@@ -88,13 +88,15 @@
 		BC09732F1AA01654007E0F06 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09731E1AA01654007E0F06 /* UIImageView+WebCache.m */; };
 		BC0973301AA01654007E0F06 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0973201AA01654007E0F06 /* UIView+WebCacheOperation.m */; };
 		BC0BA5A81AA2F16200A0C221 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0BA5A71AA2F16200A0C221 /* DetailViewController.m */; };
-		BC0BA5AB1AA2F61800A0C221 /* MyDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0BA5AA1AA2F61800A0C221 /* MyDetailCell.m */; };
-		BC0BA5AD1AA2F62800A0C221 /* MyDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC0BA5AC1AA2F62800A0C221 /* MyDetailCell.xib */; };
 		BC298FC41A9EAC02009C67BE /* RepostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC298FC31A9EAC02009C67BE /* RepostViewController.m */; };
 		BC298FF91A9F1909009C67BE /* MyString.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC298FFB1A9F1909009C67BE /* MyString.strings */; };
 		BC29900A1A9F20AF009C67BE /* DeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2990091A9F20AF009C67BE /* DeviceManager.m */; };
 		BC29900D1A9F20F4009C67BE /* NetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BC29900C1A9F20F4009C67BE /* NetManager.m */; };
 		BC915DA81AA0858300A5A508 /* DKCircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BC915DA71AA0858300A5A508 /* DKCircleButton.m */; };
+		BC95B97B1AA4811B00AB0D86 /* DetailRepostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC95B97A1AA4811B00AB0D86 /* DetailRepostCell.m */; };
+		BC95B97D1AA4813300AB0D86 /* DetailRepostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC95B97C1AA4813300AB0D86 /* DetailRepostCell.xib */; };
+		BC95B9801AA484EB00AB0D86 /* DetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC95B97F1AA484EB00AB0D86 /* DetailCommentCell.m */; };
+		BC95B9821AA484FE00AB0D86 /* DetailCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC95B9811AA484FE00AB0D86 /* DetailCommentCell.xib */; };
 		BCFD07C21A9F3C8100C21936 /* tab_config@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFD07B01A9F3C8100C21936 /* tab_config@2x.png */; };
 		BCFD07C31A9F3C8100C21936 /* tab_favlist_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFD07B11A9F3C8100C21936 /* tab_favlist_selected@2x.png */; };
 		BCFD07C41A9F3C8100C21936 /* tab_favlist_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFD07B21A9F3C8100C21936 /* tab_favlist_selected@3x.png */; };
@@ -279,9 +281,6 @@
 		BC0973201AA01654007E0F06 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		BC0BA5A61AA2F16200A0C221 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		BC0BA5A71AA2F16200A0C221 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		BC0BA5A91AA2F61800A0C221 /* MyDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDetailCell.h; sourceTree = "<group>"; };
-		BC0BA5AA1AA2F61800A0C221 /* MyDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDetailCell.m; sourceTree = "<group>"; };
-		BC0BA5AC1AA2F62800A0C221 /* MyDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyDetailCell.xib; sourceTree = "<group>"; };
 		BC298FC11A9EAB91009C67BE /* weico-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "weico-Prefix.pch"; sourceTree = "<group>"; };
 		BC298FC21A9EAC02009C67BE /* RepostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepostViewController.h; path = ../RepostViewController.h; sourceTree = "<group>"; };
 		BC298FC31A9EAC02009C67BE /* RepostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RepostViewController.m; path = ../RepostViewController.m; sourceTree = "<group>"; };
@@ -296,6 +295,12 @@
 		BC29900C1A9F20F4009C67BE /* NetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetManager.m; sourceTree = "<group>"; };
 		BC915DA61AA0858300A5A508 /* DKCircleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DKCircleButton.h; sourceTree = "<group>"; };
 		BC915DA71AA0858300A5A508 /* DKCircleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DKCircleButton.m; sourceTree = "<group>"; };
+		BC95B9791AA4811B00AB0D86 /* DetailRepostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailRepostCell.h; sourceTree = "<group>"; };
+		BC95B97A1AA4811B00AB0D86 /* DetailRepostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailRepostCell.m; sourceTree = "<group>"; };
+		BC95B97C1AA4813300AB0D86 /* DetailRepostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailRepostCell.xib; sourceTree = "<group>"; };
+		BC95B97E1AA484EB00AB0D86 /* DetailCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailCommentCell.h; sourceTree = "<group>"; };
+		BC95B97F1AA484EB00AB0D86 /* DetailCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailCommentCell.m; sourceTree = "<group>"; };
+		BC95B9811AA484FE00AB0D86 /* DetailCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailCommentCell.xib; sourceTree = "<group>"; };
 		BCFD07B01A9F3C8100C21936 /* tab_config@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_config@2x.png"; sourceTree = "<group>"; };
 		BCFD07B11A9F3C8100C21936 /* tab_favlist_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_favlist_selected@2x.png"; sourceTree = "<group>"; };
 		BCFD07B21A9F3C8100C21936 /* tab_favlist_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_favlist_selected@3x.png"; sourceTree = "<group>"; };
@@ -612,9 +617,12 @@
 				8729E78C1A99CD1C00D0DE26 /* TweetCell.m */,
 				8729E78F1A99CD1C00D0DE26 /* UpdateTweetVC.h */,
 				8729E7901A99CD1C00D0DE26 /* UpdateTweetVC.m */,
-				BC0BA5A91AA2F61800A0C221 /* MyDetailCell.h */,
-				BC0BA5AA1AA2F61800A0C221 /* MyDetailCell.m */,
-				BC0BA5AC1AA2F62800A0C221 /* MyDetailCell.xib */,
+				BC95B9791AA4811B00AB0D86 /* DetailRepostCell.h */,
+				BC95B97A1AA4811B00AB0D86 /* DetailRepostCell.m */,
+				BC95B97C1AA4813300AB0D86 /* DetailRepostCell.xib */,
+				BC95B97E1AA484EB00AB0D86 /* DetailCommentCell.h */,
+				BC95B97F1AA484EB00AB0D86 /* DetailCommentCell.m */,
+				BC95B9811AA484FE00AB0D86 /* DetailCommentCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -825,6 +833,7 @@
 				BCFD07C71A9F3C8100C21936 /* tab_tail@2x.png in Resources */,
 				8729E6ED1A99CCE400D0DE26 /* Icon@2x.png in Resources */,
 				BC0581421AA193FE008DD754 /* xyz.plist in Resources */,
+				BC95B97D1AA4813300AB0D86 /* DetailRepostCell.xib in Resources */,
 				BCFD07CA1A9F3C8100C21936 /* tab_user_comments_selected@2x.png in Resources */,
 				BCFD07C51A9F3C8100C21936 /* tab_send@2x.png in Resources */,
 				BCFD07CF1A9F3C8100C21936 /* tab_user_home_selected@3x.png in Resources */,
@@ -836,11 +845,11 @@
 				BCFD07D11A9F3C8100C21936 /* tab_user_home_special_selected@3x.png in Resources */,
 				87F0592E1A9F71A30087FB8B /* myTabBar.png in Resources */,
 				BCFD07C81A9F3C8100C21936 /* tab_user_at_selected@2x.png in Resources */,
-				BC0BA5AD1AA2F62800A0C221 /* MyDetailCell.xib in Resources */,
 				BCFD07CB1A9F3C8100C21936 /* tab_user_comments_selected@3x.png in Resources */,
 				BC0581481AA1A397008DD754 /* t_repost@2x.png in Resources */,
 				BCFD07C31A9F3C8100C21936 /* tab_favlist_selected@2x.png in Resources */,
 				BC298FF91A9F1909009C67BE /* MyString.strings in Resources */,
+				BC95B9821AA484FE00AB0D86 /* DetailCommentCell.xib in Resources */,
 				87CA5BF41A9980B800E1C3BA /* WeiboSDK.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -895,6 +904,7 @@
 				BC0973241AA01654007E0F06 /* SDWebImageCompat.m in Sources */,
 				8729E5401A99CC9200D0DE26 /* AFURLSessionManager.m in Sources */,
 				BC0973291AA01654007E0F06 /* SDWebImagePrefetcher.m in Sources */,
+				BC95B97B1AA4811B00AB0D86 /* DetailRepostCell.m in Sources */,
 				BC09732C1AA01654007E0F06 /* UIImage+MultiFormat.m in Sources */,
 				BC0973251AA01654007E0F06 /* SDWebImageDecoder.m in Sources */,
 				87CA5BF91A9980F700E1C3BA /* HttpRequestDemoTableViewController.m in Sources */,
@@ -912,11 +922,11 @@
 				8729E53F1A99CC9200D0DE26 /* AFURLResponseSerialization.m in Sources */,
 				BC0973301AA01654007E0F06 /* UIView+WebCacheOperation.m in Sources */,
 				8729E7991A99CD1C00D0DE26 /* TweetModel.m in Sources */,
-				BC0BA5AB1AA2F61800A0C221 /* MyDetailCell.m in Sources */,
 				87CA5BC91A99806000E1C3BA /* AppDelegate.m in Sources */,
 				8729E5231A99CC7E00D0DE26 /* MJRefreshHeaderView.m in Sources */,
 				BC0973221AA01654007E0F06 /* NSData+ImageContentType.m in Sources */,
 				8729E5591A99CC9E00D0DE26 /* UIRefreshControl+AFNetworking.m in Sources */,
+				BC95B9801AA484EB00AB0D86 /* DetailCommentCell.m in Sources */,
 				8729E7941A99CD1C00D0DE26 /* ListsModel.m in Sources */,
 				BC0973271AA01654007E0F06 /* SDWebImageDownloaderOperation.m in Sources */,
 				87CA5BC51A99806000E1C3BA /* main.m in Sources */,

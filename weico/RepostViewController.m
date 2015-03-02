@@ -9,6 +9,7 @@
 #import "RepostViewController.h"
 #import "AFNetworking.h"
 #import "ShareToken.h"
+#import "RepostViewController.h"
 
 
 @interface RepostViewController ()

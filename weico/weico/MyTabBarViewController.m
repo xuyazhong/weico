@@ -93,8 +93,7 @@
     
     NSArray *array = [NSArray arrayWithObjects:nvc1,nvc2,nvc3,nvc4,nvc5, nil];
     self.viewControllers = array;
-    
-    
+
     [self customTabBar];
 }
 -(void)customTabBar

@@ -40,7 +40,7 @@
     ShareToken *token = [ShareToken sharedToken];
     NSLog(@"check token:%@",[token tk]);
     [self checkToken:[token tk]];
-    
+    self.window.backgroundColor = [UIColor orangeColor];
     [self.window makeKeyAndVisible];
     return YES;
 }
