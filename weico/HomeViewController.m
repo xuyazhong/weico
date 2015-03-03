@@ -63,6 +63,7 @@
     _myTableView = [[UITableView alloc]initWithFrame:self.view.bounds];
     _myTableView.delegate = self;
     _myTableView.dataSource = self;
+    _myTableView.scrollsToTop = YES;
     [self.view addSubview:_myTableView];
     header = [[MJRefreshHeaderView alloc]initWithScrollView:_myTableView];
     footer = [[MJRefreshFooterView alloc]initWithScrollView:_myTableView];
@@ -370,30 +371,19 @@
 //    //cell.rescrollview.hidden = YES;
     if (model.pic_urls.count>0)
     {
-        NSArray *allImages = cell.myscrollview.subviews;
-        for (UIView *subImages in allImages)
-        {
-            if ([subImages isKindOfClass:[UIImageView class]])
-            {
-                [subImages removeFromSuperview];
-            }
-        }
         cell.retweetView.hidden = YES;
         cell.rescrollview.hidden = YES;
         cell.myscrollview.hidden = NO;
         cell.myscrollview.frame = CGRectMake(10, 55+model.size.height+10+10, 300, 80);
         [self addPic:model.pic_urls toView:cell.myscrollview];
         cell.myscrollview.contentSize = CGSizeMake(85*model.pic_urls.count+85, 0);
-        
         [cell.controlview setFrame:CGRectMake(0, 55+model.size.height+10+90, 320, 160)];
     }else if(model.model.size.height>0)
     {
         cell.myscrollview.hidden = YES;
-        //cell.imageView.hidden = YES;
         cell.retweetView.hidden = NO;
         cell.retweetLabel.hidden = NO;
         cell.retweetLabel.text = model.model.text;
-        //NSLog(@"text:%@",model.model.text);
         cell.retweetLabel.font = [UIFont systemFontOfSize:16];
         cell.retweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
         cell.retweetLabel.numberOfLines = 0;
@@ -402,14 +392,7 @@
         
         if (model.model.pic_urls.count>0)
         {
-            NSArray *allImages = cell.retweetView.subviews;
-            for (UIView *subImages in allImages)
-            {
-                if ([subImages isKindOfClass:[UIImageView class]])
-                {
-                    [subImages removeFromSuperview];
-                }
-            }
+            
             cell.rescrollview.hidden = NO;
 
             cell.retweetView.frame = CGRectMake(0, 55+model.size.height+10+10,320,10+model.model.size.height+10+10+80);
@@ -441,13 +424,35 @@
 }
 -(void)addPic:(NSArray *)subArr toView:(UIScrollView *)myview
 {
+    NSArray *allImages = myview.subviews;
+    for (UIView *subImages in allImages)
+    {
+        if ([subImages isKindOfClass:[UIImageView class]])
+        {
+            [subImages removeFromSuperview];
+        }
+    }
     for (int i=0; i<subArr.count; i++)
     {
-        UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
-        image.contentMode =UIViewContentModeScaleAspectFit;
-        [image sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
-        [myview addSubview:image];
+        UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
+        imageview.userInteractionEnabled  = YES;
+
+        imageview.contentMode =UIViewContentModeScaleAspectFit;
+        [imageview sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imgSelect:)];
+        [imageview addGestureRecognizer:tap];
+        [myview addSubview:imageview];
     }
+    
+}
+-(void)imgSelect:(UITapGestureRecognizer *)tap
+{
+    NSLog(@"ok");
+    NSLog(@"view:%@",tap.view);
+    
+    UIImageView *tapView = tap.view;
+    
+
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -480,6 +485,7 @@
     {
         NSLog(@"下拉刷新");
         currentPage = 1;
+        [_myTableView setContentOffset:CGPointMake(0, 0) animated:YES];
     }else if([refreshView isKindOfClass:[footer class]])
     {
         NSLog(@"上拉加载");
