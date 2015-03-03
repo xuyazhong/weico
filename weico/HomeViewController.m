@@ -370,6 +370,14 @@
 //    //cell.rescrollview.hidden = YES;
     if (model.pic_urls.count>0)
     {
+        NSArray *allImages = cell.myscrollview.subviews;
+        for (UIView *subImages in allImages)
+        {
+            if ([subImages isKindOfClass:[UIImageView class]])
+            {
+                [subImages removeFromSuperview];
+            }
+        }
         cell.retweetView.hidden = YES;
         cell.rescrollview.hidden = YES;
         cell.myscrollview.hidden = NO;
@@ -394,6 +402,14 @@
         
         if (model.model.pic_urls.count>0)
         {
+            NSArray *allImages = cell.retweetView.subviews;
+            for (UIView *subImages in allImages)
+            {
+                if ([subImages isKindOfClass:[UIImageView class]])
+                {
+                    [subImages removeFromSuperview];
+                }
+            }
             cell.rescrollview.hidden = NO;
 
             cell.retweetView.frame = CGRectMake(0, 55+model.size.height+10+10,320,10+model.model.size.height+10+10+80);
@@ -401,6 +417,7 @@
             cell.retweetLabel.frame = CGRectMake(10, 0, model.model.size.width, model.model.size.height);
             
             cell.rescrollview.frame = CGRectMake(10, model.model.size.height+10, 300, 80);
+            
             [self addPic:model.model.pic_urls toView:cell.rescrollview];
             cell.rescrollview.contentSize = CGSizeMake(85*model.model.pic_urls.count+85, 0);
             
@@ -427,6 +444,7 @@
     for (int i=0; i<subArr.count; i++)
     {
         UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
+        image.contentMode =UIViewContentModeScaleAspectFit;
         [image sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
         [myview addSubview:image];
     }

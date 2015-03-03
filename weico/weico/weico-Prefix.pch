@@ -22,6 +22,7 @@
 #define kURLGroup       @"https://api.weibo.com/2/friendships/groups/timeline.json"
 #define kURLupdate      @"https://api.weibo.com/2/statuses/update.json"
 
+#define kURLCreateComment   @"https://api.weibo.com/2/comments/create.json"
 //所有评论
 #define kURLTimeLine    @"https://api.weibo.com/2/comments/timeline.json"
 //发出的评论
@@ -45,3 +46,4 @@
 
 
 #endif
+
