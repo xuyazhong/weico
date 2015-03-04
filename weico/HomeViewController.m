@@ -16,6 +16,7 @@
 #import "UpdateTweetVC.h"
 #import "RepostViewController.h"
 #import "DetailViewController.h"
+#import "THProgressView.h"
 
 @interface HomeViewController ()
 {
@@ -30,6 +31,10 @@
     MJRefreshFooterView *footer;
     UIButton *titleBtn;
     ShareToken *mytoken;
+    
+    UIImageView *_fullImageView;
+    UIScrollView *_coverView;
+    
 }
 @end
 
@@ -231,11 +236,15 @@
             model.comments_count = [subDict objectForKey:@"comments_count"];
             NSArray *picArr = [subDict objectForKey:@"pic_urls"];
             NSMutableArray *picUrlArray = [[NSMutableArray alloc]init];
+            NSMutableArray *bmiddleUrlArray = [[NSMutableArray alloc]init];
             for (NSDictionary *picDict in picArr)
             {
                 [picUrlArray addObject:[picDict objectForKey:@"thumbnail_pic"]];
+                NSString  *bmiddle_pic = [picDict objectForKey:@"thumbnail_pic"];
+                [bmiddleUrlArray addObject:[bmiddle_pic stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"]];
             }
             model.pic_urls = picUrlArray;
+            model.bmiddle_urls = bmiddleUrlArray;
             //model.thumbnail_pic = [subDict objectForKey:@"thumbnail_pic"];
             NSDictionary *userDict = [subDict objectForKey:@"user"];
             UserModel *user = [[UserModel alloc]init];
@@ -375,7 +384,7 @@
         cell.rescrollview.hidden = YES;
         cell.myscrollview.hidden = NO;
         cell.myscrollview.frame = CGRectMake(10, 55+model.size.height+10+10, 300, 80);
-        [self addPic:model.pic_urls toView:cell.myscrollview];
+        [self addPic:model.bmiddle_urls toView:cell.myscrollview];
         cell.myscrollview.contentSize = CGSizeMake(85*model.pic_urls.count+85, 0);
         [cell.controlview setFrame:CGRectMake(0, 55+model.size.height+10+90, 320, 160)];
     }else if(model.model.size.height>0)
@@ -401,7 +410,7 @@
             
             cell.rescrollview.frame = CGRectMake(10, model.model.size.height+10, 300, 80);
             
-            [self addPic:model.model.pic_urls toView:cell.rescrollview];
+            [self addPic:model.model.bmiddle_urls toView:cell.rescrollview];
             cell.rescrollview.contentSize = CGSizeMake(85*model.model.pic_urls.count+85, 0);
             
             [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10+model.model.size.height+110, 300, 40)];
@@ -439,20 +448,68 @@
 
         imageview.contentMode =UIViewContentModeScaleAspectFit;
         [imageview sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imgSelect:)];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomInAction:)];
+        //imageview.tag = 300+i;
         [imageview addGestureRecognizer:tap];
         [myview addSubview:imageview];
     }
     
 }
--(void)imgSelect:(UITapGestureRecognizer *)tap
-{
-    NSLog(@"ok");
-    NSLog(@"view:%@",tap.view);
-    
-    UIImageView *tapView = tap.view;
-    
 
+
+//放大圖片
+-(void)zoomInAction:(UIGestureRecognizer *)touchtap
+{
+    _coverView.backgroundColor = [UIColor clearColor];
+    [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
+    if (_coverView == nil)
+    {
+        _coverView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        _coverView.backgroundColor = [UIColor blackColor];
+        UITapGestureRecognizer *tap= [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomOutAction)];
+        [_coverView addGestureRecognizer:tap];
+        
+        [self.view addSubview:_coverView];
+    }
+    
+    if (_fullImageView == nil)
+    {
+        UIImageView *tapimage = (UIImageView *)touchtap.view;
+        _fullImageView = [[UIImageView alloc] init];
+        _fullImageView.image =tapimage.image;
+        _fullImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _fullImageView.userInteractionEnabled = YES;
+        [_coverView addSubview:_fullImageView];
+    }
+    
+    [UIView animateWithDuration:0.3f animations:^{
+        _fullImageView.frame = [UIScreen mainScreen].bounds;
+        
+    }completion:^(BOOL finished)
+     {
+         _coverView.backgroundColor = [UIColor blackColor];
+     }];
+    
+    
+}
+
+//縮小圖片
+-(void)zoomOutAction
+{
+    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    _coverView.backgroundColor = [UIColor clearColor];
+    [UIView animateWithDuration:0.3f animations:^{
+        CGRect frame = CGRectZero;
+        _fullImageView.frame = frame;
+    }completion:^(BOOL finished)
+     {
+         [_coverView removeFromSuperview];
+        _coverView = nil;
+         _fullImageView =nil;
+         
+     }];
+    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

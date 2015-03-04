@@ -21,6 +21,7 @@
 #define kURLGroupLists  @"https://api.weibo.com/2/friendships/groups.json"
 #define kURLGroup       @"https://api.weibo.com/2/friendships/groups/timeline.json"
 #define kURLupdate      @"https://api.weibo.com/2/statuses/update.json"
+#define kURLUserTimeLine    @"https://api.weibo.com/2/statuses/user_timeline.json"
 
 #define kURLCreateComment   @"https://api.weibo.com/2/comments/create.json"
 //所有评论

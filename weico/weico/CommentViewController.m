@@ -33,17 +33,18 @@
 }
 -(void)createUI
 {
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     UIButton *repostBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    repostBtn.frame = CGRectMake(0, 0, 80, 40);
-    [repostBtn setTitle:@"转发" forState:UIControlStateNormal];
+    repostBtn.frame = CGRectMake(0, 0, 80, 20);
+    [repostBtn setTitle:@"评论" forState:UIControlStateNormal];
     [repostBtn addTarget:self action:@selector(repostAction) forControlEvents:UIControlEventTouchUpInside];
     [repostBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithCustomView:repostBtn];
     self.navigationItem.rightBarButtonItem = right;
     
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(0, 0, 80, 40);
+    cancelBtn.frame = CGRectMake(0, 0, 80, 20);
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
     [cancelBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];

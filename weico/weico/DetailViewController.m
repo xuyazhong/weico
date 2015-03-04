@@ -308,6 +308,7 @@
     
     UIButton *repostBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [repostBtn setTitle:@"转发" forState:UIControlStateNormal];
+    repostBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [repostBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [repostBtn setFrame:CGRectMake(10, 5, btnWidth, 20)];
     [repostBtn addTarget:self action:@selector(repostAction) forControlEvents:UIControlEventTouchUpInside];
@@ -317,6 +318,7 @@
     
     UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [commentBtn setTitle:@"评论" forState:UIControlStateNormal];
+    commentBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [commentBtn addTarget:self action:@selector(commentAction) forControlEvents:UIControlEventTouchUpInside];
     [commentBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [commentBtn setFrame:CGRectMake(10+btnWidth+2, 5, btnWidth, 20)];
@@ -325,6 +327,7 @@
     
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelBtn setTitle:@"关闭" forState:UIControlStateNormal];
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [cancelBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [cancelBtn setFrame:CGRectMake(10+btnWidth+btnWidth+4, 5, btnWidth, 20)];
     [cancelBtn addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];

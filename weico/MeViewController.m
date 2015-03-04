@@ -31,6 +31,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //kURLUserTimeLine
+    //https://api.weibo.com/2/statuses/user_timeline.json?access_token=2.00tjcdDC0IVHcFd870066fd90qij7q&uid=1886038381
     self.title = @"我";
     UIButton *imageview = [UIButton buttonWithType:UIButtonTypeCustom];
     [imageview setFrame:CGRectMake(100, 100, 50, 50)];

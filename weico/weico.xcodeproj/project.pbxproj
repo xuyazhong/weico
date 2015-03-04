@@ -72,6 +72,7 @@
 		BC0581421AA193FE008DD754 /* xyz.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC0581411AA193FE008DD754 /* xyz.plist */; };
 		BC0581471AA1A397008DD754 /* t_comments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC0581451AA1A397008DD754 /* t_comments@2x.png */; };
 		BC0581481AA1A397008DD754 /* t_repost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC0581461AA1A397008DD754 /* t_repost@2x.png */; };
+		BC07D51C1AA72E1E009E5F88 /* THProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC07D51B1AA72E1E009E5F88 /* THProgressView.m */; };
 		BC0973211AA01654007E0F06 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0973011AA01654007E0F06 /* MKAnnotationView+WebCache.m */; };
 		BC0973221AA01654007E0F06 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0973031AA01654007E0F06 /* NSData+ImageContentType.m */; };
 		BC0973231AA01654007E0F06 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0973051AA01654007E0F06 /* SDImageCache.m */; };
@@ -249,6 +250,8 @@
 		BC0581411AA193FE008DD754 /* xyz.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = xyz.plist; sourceTree = "<group>"; };
 		BC0581451AA1A397008DD754 /* t_comments@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_comments@2x.png"; sourceTree = "<group>"; };
 		BC0581461AA1A397008DD754 /* t_repost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_repost@2x.png"; sourceTree = "<group>"; };
+		BC07D51A1AA72E1E009E5F88 /* THProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THProgressView.h; sourceTree = "<group>"; };
+		BC07D51B1AA72E1E009E5F88 /* THProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THProgressView.m; sourceTree = "<group>"; };
 		BC0973001AA01654007E0F06 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		BC0973011AA01654007E0F06 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		BC0973021AA01654007E0F06 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -536,6 +539,15 @@
 			path = ../libWeiboSDK;
 			sourceTree = "<group>";
 		};
+		BC07D5191AA72E1E009E5F88 /* THProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				BC07D51A1AA72E1E009E5F88 /* THProgressView.h */,
+				BC07D51B1AA72E1E009E5F88 /* THProgressView.m */,
+			);
+			path = THProgressView;
+			sourceTree = "<group>";
+		};
 		BC0972FF1AA01654007E0F06 /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -591,6 +603,7 @@
 		BC298FFF1A9F1F43009C67BE /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				BC07D5191AA72E1E009E5F88 /* THProgressView */,
 				BC915DA51AA0858300A5A508 /* DKCircleButton */,
 				BC0972FF1AA01654007E0F06 /* SDWebImage */,
 				8729E5411A99CC9E00D0DE26 /* UIKit+AFNetworking */,
@@ -932,6 +945,7 @@
 				8729E5231A99CC7E00D0DE26 /* MJRefreshHeaderView.m in Sources */,
 				BC0973221AA01654007E0F06 /* NSData+ImageContentType.m in Sources */,
 				8729E5591A99CC9E00D0DE26 /* UIRefreshControl+AFNetworking.m in Sources */,
+				BC07D51C1AA72E1E009E5F88 /* THProgressView.m in Sources */,
 				BC95B9801AA484EB00AB0D86 /* DetailCommentCell.m in Sources */,
 				8729E7941A99CD1C00D0DE26 /* ListsModel.m in Sources */,
 				BC0973271AA01654007E0F06 /* SDWebImageDownloaderOperation.m in Sources */,

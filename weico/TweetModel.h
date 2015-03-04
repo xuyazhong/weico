@@ -19,6 +19,7 @@
 @property (nonatomic,copy) NSString *text;
 @property (nonatomic,copy) NSString *source;
 @property (nonatomic,copy) NSArray *pic_urls;
+@property (nonatomic,copy) NSArray *bmiddle_urls;
 @property (nonatomic,copy) NSString *thumbnail_pic;
 @property (nonatomic,copy) NSString *rid;
 @property (nonatomic,strong) UserModel *user;
