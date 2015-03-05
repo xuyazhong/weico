@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MJRefresh.h"
 
-@interface FavListViewController : UIViewController
+@interface FavListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,MJRefreshBaseViewDelegate>
 
 @end

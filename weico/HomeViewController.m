@@ -17,6 +17,8 @@
 #import "RepostViewController.h"
 #import "DetailViewController.h"
 #import "THProgressView.h"
+#import "XYZImageView.h"
+
 
 @interface HomeViewController ()
 {
@@ -384,7 +386,7 @@
         cell.rescrollview.hidden = YES;
         cell.myscrollview.hidden = NO;
         cell.myscrollview.frame = CGRectMake(10, 55+model.size.height+10+10, 300, 80);
-        [self addPic:model.bmiddle_urls toView:cell.myscrollview];
+        [self addPic:model.pic_urls toView:cell.myscrollview];
         cell.myscrollview.contentSize = CGSizeMake(85*model.pic_urls.count+85, 0);
         [cell.controlview setFrame:CGRectMake(0, 55+model.size.height+10+90, 320, 160)];
     }else if(model.model.size.height>0)
@@ -410,7 +412,7 @@
             
             cell.rescrollview.frame = CGRectMake(10, model.model.size.height+10, 300, 80);
             
-            [self addPic:model.model.bmiddle_urls toView:cell.rescrollview];
+            [self addPic:model.model.pic_urls toView:cell.rescrollview];
             cell.rescrollview.contentSize = CGSizeMake(85*model.model.pic_urls.count+85, 0);
             
             [cell.controlview setFrame:CGRectMake(10, 55+model.size.height+10+10+model.model.size.height+110, 300, 40)];
@@ -436,16 +438,18 @@
     NSArray *allImages = myview.subviews;
     for (UIView *subImages in allImages)
     {
-        if ([subImages isKindOfClass:[UIImageView class]])
+        if ([subImages isKindOfClass:[XYZImageView class]])
         {
             [subImages removeFromSuperview];
         }
     }
     for (int i=0; i<subArr.count; i++)
     {
-        UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
+        XYZImageView *imageview = [[XYZImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
         imageview.userInteractionEnabled  = YES;
-
+        NSMutableString *bmiddle = [NSMutableString stringWithString:subArr[i]];
+        imageview.strUrl = [bmiddle stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];;
+        NSLog(@"bmiddle:%@",imageview.strUrl);
         imageview.contentMode =UIViewContentModeScaleAspectFit;
         [imageview sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomInAction:)];
@@ -467,17 +471,19 @@
     {
         _coverView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
         _coverView.backgroundColor = [UIColor blackColor];
-        UITapGestureRecognizer *tap= [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomOutAction)];
+        UITapGestureRecognizer *tap= [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomOutAction:)];
         [_coverView addGestureRecognizer:tap];
-        
         [self.view addSubview:_coverView];
     }
     
     if (_fullImageView == nil)
     {
-        UIImageView *tapimage = (UIImageView *)touchtap.view;
+        XYZImageView *tapimage = (XYZImageView *)touchtap.view;
+        
         _fullImageView = [[UIImageView alloc] init];
-        _fullImageView.image =tapimage.image;
+        NSLog(@"tapImage:%@",tapimage.strUrl);
+        [_fullImageView sd_setImageWithURL:[NSURL URLWithString:tapimage.strUrl] placeholderImage:tapimage.image];
+        //_fullImageView.image =tapimage.image;
         _fullImageView.contentMode = UIViewContentModeScaleAspectFit;
         _fullImageView.userInteractionEnabled = YES;
         [_coverView addSubview:_fullImageView];
@@ -495,7 +501,7 @@
 }
 
 //縮小圖片
--(void)zoomOutAction
+-(void)zoomOutAction:(UITapGestureRecognizer *)tap
 {
     [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     _coverView.backgroundColor = [UIColor clearColor];

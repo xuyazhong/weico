@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MJRefresh.h"
 
-@interface MeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface MeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,MJRefreshBaseViewDelegate>
 
 @end

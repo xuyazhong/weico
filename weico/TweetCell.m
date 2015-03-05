@@ -72,7 +72,7 @@
 -(void)createRetweet
 {
     _retweetView = [[UIView alloc]initWithFrame:CGRectMake(0, 230, 320, 160)];
-    _retweetView.backgroundColor = [UIColor colorWithRed:155/255.0f green:155/255.0f blue:155/255.0f alpha:0.3];
+    _retweetView.backgroundColor = [UIColor colorWithRed:155/255.0f green:155/255.0f blue:155/255.0f alpha:0.1];
     //_retweetView.backgroundColor = [UIColor grayColor];
     //_retweetView.alpha = 0.5;
     

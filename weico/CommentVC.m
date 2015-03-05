@@ -28,12 +28,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    urlArr = [NSArray arrayWithObjects:kURLTimeLine,kURLByMe,kURLToMe, nil];
     _dataArray = [[NSMutableArray alloc]init];
     token = [ShareToken sharedToken];
     currentPage = 1;
     [self createUI];
-    [self getJSONWithURL:kURLTimeLine andPage:1];
     // Do any additional setup after loading the view.
 }
 -(void)createUI
