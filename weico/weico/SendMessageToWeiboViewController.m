@@ -44,7 +44,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self ssoButtonPressed];
+    [self performSelector:@selector(ssoButtonPressed) withObject:self afterDelay:0.3];
+    //[self ssoButtonPressed];
     //[self ssoOutButtonPressed];
     /*
     self.view.backgroundColor = [UIColor whiteColor];
