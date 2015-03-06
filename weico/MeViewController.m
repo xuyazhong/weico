@@ -229,9 +229,6 @@
     if (cell == nil)
     {
         cell = [[TweetCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myCellID];
-        cell.leftUtilityButtons = [self leftButtons];
-        cell.rightUtilityButtons = [self rightButtons];
-        cell.delegate = self;
     }
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
     [cell.userInfo sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
@@ -338,12 +335,11 @@
 }
 
 
-//放大圖片
+//放大图片
 -(void)zoomInAction:(UIGestureRecognizer *)touchtap
 {
     _coverView.backgroundColor = [UIColor clearColor];
     [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    
     if (_coverView == nil)
     {
         _coverView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -377,7 +373,7 @@
     
 }
 
-//縮小圖片
+//缩小图片
 -(void)zoomOutAction:(UITapGestureRecognizer *)tap
 {
     [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
@@ -443,36 +439,5 @@
 {
     
 }
-- (NSArray *)rightButtons
-{
-    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
-                                                title:@"More"];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
-                                                title:@"Delete"];
-    
-    return rightUtilityButtons;
-}
 
-- (NSArray *)leftButtons
-{
-    NSMutableArray *leftUtilityButtons = [NSMutableArray new];
-    
-    [leftUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:0.07 green:0.75f blue:0.16f alpha:1.0]
-                                                icon:[UIImage imageNamed:@"check.png"]];
-    [leftUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:1.0f green:1.0f blue:0.35f alpha:1.0]
-                                                icon:[UIImage imageNamed:@"clock.png"]];
-    [leftUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0]
-                                                icon:[UIImage imageNamed:@"cross.png"]];
-    [leftUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:0.55f green:0.27f blue:0.07f alpha:1.0]
-                                                icon:[UIImage imageNamed:@"list.png"]];
-    
-    return leftUtilityButtons;
-}
 @end

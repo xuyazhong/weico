@@ -14,7 +14,7 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #import "WeiboSDK.h"
-
+#import "SVProgressHUD.h"
 #import "XYZ.h"
 #import "ShareToken.h"
 

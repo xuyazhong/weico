@@ -44,6 +44,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self ssoButtonPressed];
+    //[self ssoOutButtonPressed];
+    /*
     self.view.backgroundColor = [UIColor whiteColor];
     
     UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
@@ -77,7 +80,7 @@
     ssoOutButton.frame = CGRectMake(20, 130, 280, 40);
     [scrollView addSubview:ssoOutButton];
     
-    
+*/
     /*
     UILabel *shareTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 170, 290, 20)];
     shareTextLabel.text = NSLocalizedString(@"分享:", nil);

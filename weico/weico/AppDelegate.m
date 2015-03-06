@@ -31,16 +31,16 @@
     [WeiboSDK enableDebugMode:YES];
     [WeiboSDK registerApp:kAppKey];
     
-    
+    self.viewController = [[SendMessageToWeiboViewController alloc] init];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.viewController = [[SendMessageToWeiboViewController alloc] init];
+    
 
     
     ShareToken *token = [ShareToken sharedToken];
     NSLog(@"check token:%@",[token tk]);
     [self checkToken:[token tk]];
-    self.window.backgroundColor = [UIColor orangeColor];
+    self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -70,6 +70,7 @@
              self.window.rootViewController = myTabBar;
          }else
          {
+             
              self.window.rootViewController = self.viewController;
          }
          

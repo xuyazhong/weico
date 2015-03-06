@@ -26,6 +26,7 @@
     UIImageView *head;
     UILabel *selectLabel;
     CGFloat btnWidth;
+    UIImageView  *customTabBar;
 }
 @end
 
@@ -72,8 +73,6 @@
 }
 -(void)createUI
 {
-    
-    
     FavListViewController *view1 = [[FavListViewController alloc]init];
     UINavigationController *nvc1 = [[UINavigationController alloc]initWithRootViewController:view1];
     
@@ -101,7 +100,7 @@
     self.tabBar.hidden = YES;
     CGFloat tabBarViewY = self.view.frame.size.height - 49 ;
     
-    UIImageView  *customTabBar = [[UIImageView alloc]initWithFrame:CGRectMake(0, tabBarViewY, self.view.bounds.size.width, 49)];
+    customTabBar = [[UIImageView alloc]initWithFrame:CGRectMake(0, tabBarViewY, self.view.bounds.size.width, 49)];
     customTabBar.userInteractionEnabled = YES;
     customTabBar.image = [UIImage imageNamed:@"myTabBar"];
     customTabBar.tintColor = [UIColor orangeColor];
@@ -196,5 +195,9 @@
     // Pass the selected object to the new view controller.
 }
 */
+-(void)setHidden
+{
+    customTabBar.hidden = YES;
+}
 
 @end

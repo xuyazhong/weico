@@ -97,6 +97,7 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager GET:kURLGroupLists parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
+        
         groupList = [[UIScrollView alloc]initWithFrame:CGRectMake(self.view.bounds.size.width/2-100, 64, 200, 300)];
         groupList.backgroundColor = [UIColor blackColor];
         groupList.alpha = 0.8;
@@ -186,6 +187,7 @@
 }
 -(void)getJSON:(int)page andUrl:(NSString *)url andGroupID:(NSString *)groupid
 {
+    [SVProgressHUD showWithStatus:@"正在加载数据..."];
     NSDictionary *dict;
     if (groupid != nil)
     {
@@ -291,13 +293,23 @@
         [_myTableView reloadData];
         [header endRefreshing];
         [footer endRefreshing];
+        NSLog(@"开始加载");
+        [SVProgressHUD dismiss];
+        [self performSelector:@selector(loadSuccess) withObject:nil afterDelay:0.3f];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
     {
+        NSLog(@"加载失败");
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
         NSLog(@"error:%@",error.localizedDescription);
     }];
     
 }
-
+-(void)loadSuccess
+{
+    [SVProgressHUD showSuccessWithStatus:@"加载成功"];
+}
 -(NSString *)flattenHTML:(NSString *)html
 {
     NSScanner *theScanner;
@@ -461,12 +473,12 @@
 }
 
 
-//放大圖片
+
 -(void)zoomInAction:(UIGestureRecognizer *)touchtap
 {
     _coverView.backgroundColor = [UIColor clearColor];
     [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    
+    self.navigationController.navigationBarHidden = YES;
     if (_coverView == nil)
     {
         _coverView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -500,9 +512,11 @@
     
 }
 
-//縮小圖片
+//缩小图片
 -(void)zoomOutAction:(UITapGestureRecognizer *)tap
 {
+    self.navigationController.navigationBarHidden = NO;
+
     [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     _coverView.backgroundColor = [UIColor clearColor];
     [UIView animateWithDuration:0.3f animations:^{

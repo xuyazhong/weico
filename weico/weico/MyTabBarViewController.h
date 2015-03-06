@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface MyTabBarViewController : UITabBarController
-
+-(void)setHidden;
 @end

@@ -7,19 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SWTableViewCell.h"
 
-@protocol SWTableViewCellDelegate <NSObject>
-
-@optional
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerLeftUtilityButtonWithIndex:(NSInteger)index;
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index;
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state;
-- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell;
-- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state;
-- (void)swipeableTableViewCellDidEndScrolling:(SWTableViewCell *)cell;
-
-@end
 
 @interface TweetCell : UITableViewCell
 @property (strong, nonatomic)  UIImageView *userInfo;
@@ -40,11 +28,5 @@
 @property (strong, nonatomic)  UILabel *repostsCount;
 @property (strong, nonatomic)  UILabel *commentsCount;
 
-@property (nonatomic, copy) NSArray *leftUtilityButtons;
-@property (nonatomic, copy) NSArray *rightUtilityButtons;
-@property (nonatomic, weak) id <SWTableViewCellDelegate> delegate;
-
-@property (weak, nonatomic) UILabel *customLabel;
-@property (weak, nonatomic) UIImageView *customImageView;
 
 @end
