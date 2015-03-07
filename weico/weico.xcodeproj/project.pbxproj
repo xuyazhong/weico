@@ -88,6 +88,10 @@
 		BC09732F1AA01654007E0F06 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BC09731E1AA01654007E0F06 /* UIImageView+WebCache.m */; };
 		BC0973301AA01654007E0F06 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0973201AA01654007E0F06 /* UIView+WebCacheOperation.m */; };
 		BC0BA5A81AA2F16200A0C221 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0BA5A71AA2F16200A0C221 /* DetailViewController.m */; };
+		BC17CDDC1AAA8D7A00582DBB /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC17CDDB1AAA8D7A00582DBB /* CoreFoundation.framework */; };
+		BC17CDDE1AAA8D8200582DBB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC17CDDD1AAA8D8200582DBB /* CoreTelephony.framework */; };
+		BC17CDE41AAA8E7F00582DBB /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC17CDE31AAA8E7F00582DBB /* PushConfig.plist */; };
+		BC17CE051AAAAA3100582DBB /* libPushSDK-1.8.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC17CE041AAAAA3100582DBB /* libPushSDK-1.8.2.a */; };
 		BC298FC41A9EAC02009C67BE /* RepostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC298FC31A9EAC02009C67BE /* RepostViewController.m */; };
 		BC298FF91A9F1909009C67BE /* MyString.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC298FFB1A9F1909009C67BE /* MyString.strings */; };
 		BC29900A1A9F20AF009C67BE /* DeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2990091A9F20AF009C67BE /* DeviceManager.m */; };
@@ -306,6 +310,11 @@
 		BC0973201AA01654007E0F06 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		BC0BA5A61AA2F16200A0C221 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		BC0BA5A71AA2F16200A0C221 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		BC17CDDB1AAA8D7A00582DBB /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		BC17CDDD1AAA8D8200582DBB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		BC17CDE31AAA8E7F00582DBB /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
+		BC17CE031AAAAA3100582DBB /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
+		BC17CE041AAAAA3100582DBB /* libPushSDK-1.8.2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.2.a"; sourceTree = "<group>"; };
 		BC298FC11A9EAB91009C67BE /* weico-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "weico-Prefix.pch"; sourceTree = "<group>"; };
 		BC298FC21A9EAC02009C67BE /* RepostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepostViewController.h; path = ../RepostViewController.h; sourceTree = "<group>"; };
 		BC298FC31A9EAC02009C67BE /* RepostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RepostViewController.m; path = ../RepostViewController.m; sourceTree = "<group>"; };
@@ -391,10 +400,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC17CDDE1AAA8D8200582DBB /* CoreTelephony.framework in Frameworks */,
+				BC17CDDC1AAA8D7A00582DBB /* CoreFoundation.framework in Frameworks */,
 				8729DEC21A9985B400B27E57 /* MobileCoreServices.framework in Frameworks */,
 				8729DEC01A99859E00B27E57 /* CFNetwork.framework in Frameworks */,
 				8729DEBE1A99859600B27E57 /* libz.dylib in Frameworks */,
 				87CA5C021A9982F100E1C3BA /* Security.framework in Frameworks */,
+				BC17CE051AAAAA3100582DBB /* libPushSDK-1.8.2.a in Frameworks */,
 				87CA5C001A9982E600E1C3BA /* SystemConfiguration.framework in Frameworks */,
 				87CA5BFE1A9982DF00E1C3BA /* ImageIO.framework in Frameworks */,
 				87CA5BFC1A9982D900E1C3BA /* QuartzCore.framework in Frameworks */,
@@ -507,6 +519,8 @@
 		87CA5BB71A99806000E1C3BA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BC17CDDD1AAA8D8200582DBB /* CoreTelephony.framework */,
+				BC17CDDB1AAA8D7A00582DBB /* CoreFoundation.framework */,
 				8729DEC11A9985B400B27E57 /* MobileCoreServices.framework */,
 				8729DEBF1A99859E00B27E57 /* CFNetwork.framework */,
 				8729DEBD1A99859600B27E57 /* libz.dylib */,
@@ -554,6 +568,7 @@
 				BC298FFB1A9F1909009C67BE /* MyString.strings */,
 				BC298FFD1A9F1BEB009C67BE /* XYZ.h */,
 				BC0581411AA193FE008DD754 /* xyz.plist */,
+				BC17CDE31AAA8E7F00582DBB /* PushConfig.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -644,6 +659,15 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
+		BC17CE021AAAAA3100582DBB /* jpush */ = {
+			isa = PBXGroup;
+			children = (
+				BC17CE031AAAAA3100582DBB /* APService.h */,
+				BC17CE041AAAAA3100582DBB /* libPushSDK-1.8.2.a */,
+			);
+			path = jpush;
+			sourceTree = "<group>";
+		};
 		BC298FFE1A9F1F3B009C67BE /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -659,6 +683,7 @@
 		BC298FFF1A9F1F43009C67BE /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				BC17CE021AAAAA3100582DBB /* jpush */,
 				BCC02EDB1AA9C7010066FC67 /* SVProgressHUD */,
 				BCE621FD1AA86A9C002EC9A5 /* PodFiles */,
 				BC07D5191AA72E1E009E5F88 /* THProgressView */,
@@ -906,6 +931,13 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = xuyazhong;
 				TargetAttributes = {
+					87CA5BB41A99806000E1C3BA = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					87CA5BCF1A99806100E1C3BA = {
 						TestTargetID = 87CA5BB41A99806000E1C3BA;
 					};
@@ -959,6 +991,7 @@
 				BCFD07CA1A9F3C8100C21936 /* tab_user_comments_selected@2x.png in Resources */,
 				BCFD07C51A9F3C8100C21936 /* tab_send@2x.png in Resources */,
 				BCFD07CF1A9F3C8100C21936 /* tab_user_home_selected@3x.png in Resources */,
+				BC17CDE41AAA8E7F00582DBB /* PushConfig.plist in Resources */,
 				BCFD07CD1A9F3C8100C21936 /* tab_user_home_groups_selected@3x.png in Resources */,
 				BCC91E9D1AA965FE002923F2 /* icon.png in Resources */,
 				BCC91EA01AA965FE002923F2 /* Default@2x.png in Resources */,
@@ -1205,9 +1238,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libWeiboSDK",
+					"$(PROJECT_DIR)/weico/jpushlib",
+					"$(PROJECT_DIR)/weico/jpush",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/weico/jpush";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1223,9 +1259,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libWeiboSDK",
+					"$(PROJECT_DIR)/weico/jpushlib",
+					"$(PROJECT_DIR)/weico/jpush",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/weico/jpush";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

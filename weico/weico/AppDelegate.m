@@ -11,6 +11,8 @@
 #import "ShareToken.h"
 #import "MyTabBarViewController.h"
 #import "AFNetworking.h"
+#import "APService.h"
+
 
 @interface WBBaseRequest ()
 - (void)debugPrint;
@@ -42,6 +44,8 @@
     [self checkToken:[token tk]];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    
     return YES;
 }
 -(void)checkToken:(NSString *)token
@@ -176,5 +180,6 @@
 {
     return [WeiboSDK handleOpenURL:url delegate:self ];
 }
+
 
 @end
