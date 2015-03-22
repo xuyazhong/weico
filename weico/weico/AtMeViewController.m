@@ -7,24 +7,12 @@
 //
 
 #import "AtMeViewController.h"
-#import "UIImageView+WebCache.h"
-#import "UIButton+WebCache.h"
-#import "AFNetworking.h"
-#import "TweetModel.h"
-#import "DetailViewController.h"
-#import "TweetCell.h"
-#import "XYZImageView.h"
 
 @interface AtMeViewController ()
 {
-    UITableView *_myTableView;
-    MJRefreshHeaderView *header;
-    MJRefreshFooterView *footer;
-    NSMutableArray *_dataArray;
-    NSString *currentURL;
-    UIImageView *_fullImageView;
-    UIScrollView *_coverView;
-    NSUInteger currentPage;
+    UIScrollView *groupList;
+    NSMutableArray *groupArray;
+    NSMutableArray *groupUrl;
 }
 @end
 
@@ -35,28 +23,100 @@
     [super viewDidLoad];
     currentPage = 1;
     currentURL = kURLATMe;
-    _dataArray = [[NSMutableArray alloc]init];
-
-    self.title = @"@我";
-
-    _myTableView = [[UITableView alloc]initWithFrame:self.view.bounds];
-    _myTableView.delegate = self;
-    _myTableView.dataSource = self;
-    [self.view addSubview:_myTableView];
-    header = [[MJRefreshHeaderView alloc]initWithScrollView:_myTableView];
-    footer = [[MJRefreshFooterView alloc]initWithScrollView:_myTableView];
-    header.delegate = self;
-    footer.delegate = self;
     
     [self getJSON:1 andUrl:currentURL];
+    [self createNav];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
+    [self.view addGestureRecognizer:tap];
     // Do any additional setup after loading the view.
 }
+-(void)tapAction:(UITapGestureRecognizer *)tap
+{
+    NSLog(@"tap View = %@",tap.view);
+    groupList.hidden = YES;
+}
+-(void)loadNewData
+{
+    NSLog(@"下拉刷新");
+    currentPage = 1;
+    [_myTableView setContentOffset:CGPointMake(0, 0) animated:YES];
+    [self getJSON:currentPage andUrl:currentURL];
+}
+-(void)loadMoreData
+{
+    currentPage ++;
+    [self getJSON:currentPage andUrl:currentURL];
+}
 
+-(void)createNav
+{
+    titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [titleBtn setFrame:CGRectMake(0, 0, 80, 64)];
+    [titleBtn setTitle:@"@我的微博" forState:UIControlStateNormal];
+    [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [titleBtn addTarget:self action:@selector(listGroup:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = titleBtn;
+         
+    
+    groupArray = [[NSMutableArray alloc]initWithObjects:@"@我的微博",@"@我的评论", nil];
+    groupUrl = [[NSMutableArray alloc]initWithObjects:kURLATMe,kURLATComment, nil];
+    groupList = [[UIScrollView alloc]initWithFrame:CGRectMake(self.view.bounds.size.width/2-100, 64, 200, 40*groupArray.count)];
+    groupList.backgroundColor = [UIColor blackColor];
+    groupList.alpha = 0.8;
+    groupList.hidden = YES;
+        for (int i=0;i<groupArray.count;i++)
+        {
+             UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+             [btn setFrame:CGRectMake(5, 5+30*i, 190, 40)];
+             btn.titleLabel.font = [UIFont systemFontOfSize:14];
+             [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+             btn.tag = 300 + i;
+             [btn addTarget:self action:@selector(selectGroup:) forControlEvents:UIControlEventTouchUpInside];
+             [btn setTitle:groupArray[i] forState:UIControlStateNormal];
+             [groupList addSubview:btn];
+             [groupList setContentSize:CGSizeMake(0, 5+30*i+30)];
+         }
+         [self.view addSubview:groupList];
+}
+-(void)listGroup:(UIButton *)btn
+{
+    if (btn.selected == YES)
+    {
+        NSLog(@"select");
+        btn.selected = NO;
+        groupList.hidden = YES;
+        //[self.view bringSubviewToFront:groupList];
+    }else
+    {
+        NSLog(@"normal");
+        btn.selected = YES;
+        groupList.hidden = NO;
+        [self.view bringSubviewToFront:groupList];
+    }
+}
+-(void)selectGroup:(UIButton *)btn
+{
+    NSInteger index = btn.tag - 300;
+
+    [titleBtn setTitle:groupArray[index] forState:UIControlStateNormal];
+    for (int i=0; i<groupArray.count; i++)
+    {
+        UIButton *myBtn = (UIButton *)[self.view viewWithTag:300+i];
+        myBtn.selected = NO;
+    }
+    btn.selected = YES;
+    titleBtn.selected = NO;
+    groupList.hidden = YES;
+    currentURL = groupUrl[index];
+    currentPage=1;
+    [self getJSON:currentPage andUrl:currentURL];
+}
 -(void)getJSON:(int)page andUrl:(NSString *)url
 {
     NSDictionary *dict;
-    dict = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",[NSString stringWithFormat:@"%d",page],@"page",@"uid",[[ShareToken readUserInfo] objectForKey:@"uid"], nil];
+    dict = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",[NSString stringWithFormat:@"%d",page],@"page", nil];
     //NSLog(@"dict:%@",dict);
+    NSLog(@"url:%@",url);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager GET:url parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
@@ -66,6 +126,10 @@
              [_dataArray removeAllObjects];
          }
          NSArray *array = [responseObject objectForKey:@"statuses"];
+         if (array.count == 0)
+         {
+             array = [responseObject objectForKey:@"comments"];
+         }
          for (NSDictionary *subDict in array)
          {
              TweetModel *model = [[TweetModel alloc]init];
@@ -149,8 +213,9 @@
          //NSLog(@"success:%@",responseObject);
          
          [_myTableView reloadData];
-         [header endRefreshing];
-         [footer endRefreshing];
+         [_myTableView.header endRefreshing];
+         [_myTableView.footer endRefreshing];
+
      } failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
          NSLog(@"error:%@",error.localizedDescription);
@@ -158,27 +223,15 @@
     
 }
 
--(NSString *)flattenHTML:(NSString *)html
-{
-    NSScanner *theScanner;
-    NSString *text = nil;
-    theScanner = [NSScanner scannerWithString:html];
-    while ([theScanner isAtEnd] == NO)
-    {
-        // find start of tag
-        [theScanner scanUpToString:@"<" intoString:NULL] ;
-        // find end of tag
-        [theScanner scanUpToString:@">" intoString:&text] ;
-        // replace the found tag with a space
-        //(you can filter multi-spaces out later if you wish)
-        html = [html stringByReplacingOccurrencesOfString:
-                [NSString stringWithFormat:@"%@>", text]
-                                               withString:@""];
-    } // while //
-    
-    return html;
-}
 
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"touchesBegan - touch count = %d",[touches count]);
+    for(UITouch *touch in event.allTouches)
+    {
+        NSLog(@"touch view:%@",touch.view);
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -210,11 +263,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     static NSString *myATMeCell = @"atme";
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:myATMeCell];
     if (cell == nil)
     {
         cell = [[TweetCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myATMeCell];
+        cell.leftUtilityButtons = [self leftButtons];
+        cell.rightUtilityButtons = [self rightButtons];
+        cell.delegate = self;
     }
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
     [cell.userInfo sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
@@ -293,90 +350,10 @@
     }
     return cell;
 }
--(void)addPic:(NSArray *)subArr toView:(UIScrollView *)myview
-{
-    NSArray *allImages = myview.subviews;
-    for (UIView *subImages in allImages)
-    {
-        if ([subImages isKindOfClass:[XYZImageView class]])
-        {
-            [subImages removeFromSuperview];
-        }
-    }
-    for (int i=0; i<subArr.count; i++)
-    {
-        XYZImageView *imageview = [[XYZImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
-        imageview.userInteractionEnabled  = YES;
-        NSMutableString *bmiddle = [NSMutableString stringWithString:subArr[i]];
-        imageview.strUrl = [bmiddle stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];;
-        //NSLog(@"bmiddle:%@",imageview.strUrl);
-        imageview.contentMode =UIViewContentModeScaleAspectFit;
-        [imageview sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomInAction:)];
-        //imageview.tag = 300+i;
-        [imageview addGestureRecognizer:tap];
-        [myview addSubview:imageview];
-    }
-    
-}
 
 
-//放大圖片
--(void)zoomInAction:(UIGestureRecognizer *)touchtap
-{
-    _coverView.backgroundColor = [UIColor clearColor];
-    [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    
-    if (_coverView == nil)
-    {
-        _coverView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        _coverView.backgroundColor = [UIColor blackColor];
-        UITapGestureRecognizer *tap= [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomOutAction:)];
-        [_coverView addGestureRecognizer:tap];
-        [self.view addSubview:_coverView];
-    }
-    
-    if (_fullImageView == nil)
-    {
-        XYZImageView *tapimage = (XYZImageView *)touchtap.view;
-        
-        _fullImageView = [[UIImageView alloc] init];
-        NSLog(@"tapImage:%@",tapimage.strUrl);
-        [_fullImageView sd_setImageWithURL:[NSURL URLWithString:tapimage.strUrl] placeholderImage:tapimage.image];
-        //_fullImageView.image =tapimage.image;
-        _fullImageView.contentMode = UIViewContentModeScaleAspectFit;
-        _fullImageView.userInteractionEnabled = YES;
-        [_coverView addSubview:_fullImageView];
-    }
-    
-    [UIView animateWithDuration:0.3f animations:^{
-        _fullImageView.frame = [UIScreen mainScreen].bounds;
-        
-    }completion:^(BOOL finished)
-     {
-         _coverView.backgroundColor = [UIColor blackColor];
-     }];
-    
-    
-}
 
-//縮小圖片
--(void)zoomOutAction:(UITapGestureRecognizer *)tap
-{
-    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    _coverView.backgroundColor = [UIColor clearColor];
-    [UIView animateWithDuration:0.3f animations:^{
-        CGRect frame = CGRectZero;
-        _fullImageView.frame = frame;
-    }completion:^(BOOL finished)
-     {
-         [_coverView removeFromSuperview];
-         _coverView = nil;
-         _fullImageView =nil;
-         
-     }];
-    
-}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
@@ -399,32 +376,5 @@
 }
 
 
-
-#pragma mark - MJRefreshBaseViewDelegate
-// 开始进入刷新状态就会调用
-- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
-{
-    if ([refreshView isKindOfClass:[header class]])
-    {
-        NSLog(@"下拉刷新");
-        currentPage = 1;
-        [_myTableView setContentOffset:CGPointMake(0, 0) animated:YES];
-    }else if([refreshView isKindOfClass:[footer class]])
-    {
-        NSLog(@"上拉加载");
-        currentPage ++;
-    }
-    [self getJSON:currentPage andUrl:currentURL];
-}
-// 刷新完毕就会调用
-- (void)refreshViewEndRefreshing:(MJRefreshBaseView *)refreshView
-{
-    
-}
-// 刷新状态变更就会调用
-- (void)refreshView:(MJRefreshBaseView *)refreshView stateChange:(MJRefreshState)state
-{
-    
-}
 
 @end

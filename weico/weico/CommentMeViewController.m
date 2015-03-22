@@ -7,24 +7,13 @@
 //
 
 #import "CommentMeViewController.h"
-#import "UIImageView+WebCache.h"
-#import "UIButton+WebCache.h"
-#import "AFNetworking.h"
-#import "TweetModel.h"
-#import "DetailViewController.h"
-#import "TweetCell.h"
-#import "XYZImageView.h"
+
 
 @interface CommentMeViewController ()
 {
-    UITableView *_myTableView;
-    MJRefreshHeaderView *header;
-    MJRefreshFooterView *footer;
-    NSMutableArray *_dataArray;
-    NSString *currentURL;
-    UIImageView *_fullImageView;
-    UIScrollView *_coverView;
-    NSUInteger currentPage;
+    UIScrollView *groupList;
+    NSMutableArray *groupArray;
+    NSMutableArray *groupUrl;
 }
 @end
 
@@ -35,23 +24,88 @@
     [super viewDidLoad];
     currentPage = 1;
     currentURL = kURLCommentToMe;
-    _dataArray = [[NSMutableArray alloc]init];
     
     self.title = @"评论";
-
-    _myTableView = [[UITableView alloc]initWithFrame:self.view.bounds];
-    _myTableView.delegate = self;
-    _myTableView.dataSource = self;
-    [self.view addSubview:_myTableView];
-    header = [[MJRefreshHeaderView alloc]initWithScrollView:_myTableView];
-    footer = [[MJRefreshFooterView alloc]initWithScrollView:_myTableView];
-    header.delegate = self;
-    footer.delegate = self;
     
     [self getJSON:1 andUrl:currentURL];
+    [self createNav];
     // Do any additional setup after loading the view.
 }
-
+-(void)loadNewData
+{
+    NSLog(@"下拉刷新");
+    currentPage = 1;
+    [_myTableView setContentOffset:CGPointMake(0, 0) animated:YES];
+    [self getJSON:currentPage andUrl:currentURL];
+}
+-(void)loadMoreData
+{
+    currentPage ++;
+    [self getJSON:currentPage andUrl:currentURL];
+}
+-(void)createNav
+{
+    titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [titleBtn setFrame:CGRectMake(0, 0, 80, 64)];
+    [titleBtn setTitle:@"收到的评论" forState:UIControlStateNormal];
+    [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [titleBtn addTarget:self action:@selector(listGroup:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = titleBtn;
+    
+    
+    groupArray = [[NSMutableArray alloc]initWithObjects:@"收到的评论",@"发出的评论", nil];
+    groupUrl = [[NSMutableArray alloc]initWithObjects:kURLCommentToMe,kURLCommentByMe, nil];
+    groupList = [[UIScrollView alloc]initWithFrame:CGRectMake(self.view.bounds.size.width/2-100, 64, 200, 40*groupArray.count)];
+    groupList.backgroundColor = [UIColor blackColor];
+    groupList.alpha = 0.8;
+    groupList.hidden = YES;
+    for (int i=0;i<groupArray.count;i++)
+    {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btn setFrame:CGRectMake(5, 5+30*i, 190, 40)];
+        btn.titleLabel.font = [UIFont systemFontOfSize:14];
+        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        btn.tag = 400 + i;
+        [btn addTarget:self action:@selector(selectGroup:) forControlEvents:UIControlEventTouchUpInside];
+        [btn setTitle:groupArray[i] forState:UIControlStateNormal];
+        [groupList addSubview:btn];
+        [groupList setContentSize:CGSizeMake(0, 5+30*i+30)];
+    }
+    [self.view addSubview:groupList];
+}
+-(void)listGroup:(UIButton *)btn
+{
+    if (btn.selected == YES)
+    {
+        NSLog(@"select");
+        btn.selected = NO;
+        groupList.hidden = YES;
+        //[self.view bringSubviewToFront:groupList];
+    }else
+    {
+        NSLog(@"normal");
+        btn.selected = YES;
+        groupList.hidden = NO;
+        [self.view bringSubviewToFront:groupList];
+    }
+}
+-(void)selectGroup:(UIButton *)btn
+{
+    NSInteger index = btn.tag - 400;
+    
+    [titleBtn setTitle:groupArray[index] forState:UIControlStateNormal];
+    for (int i=0; i<groupArray.count; i++)
+    {
+        UIButton *myBtn = (UIButton *)[self.view viewWithTag:400+i];
+        myBtn.selected = NO;
+    }
+    btn.selected = YES;
+    titleBtn.selected = NO;
+    groupList.hidden = YES;
+    currentURL = groupUrl[index];
+    currentPage=1;
+    [self getJSON:currentPage andUrl:currentURL];
+}
 -(void)getJSON:(int)page andUrl:(NSString *)url
 {
     NSDictionary *dict;
@@ -154,8 +208,9 @@
          //NSLog(@"success:%@",responseObject);
          
          [_myTableView reloadData];
-         [header endRefreshing];
-         [footer endRefreshing];
+         [_myTableView.header endRefreshing];
+         [_myTableView.footer endRefreshing];
+
      } failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
          NSLog(@"error:%@",error.localizedDescription);
@@ -163,26 +218,6 @@
     
 }
 
--(NSString *)flattenHTML:(NSString *)html
-{
-    NSScanner *theScanner;
-    NSString *text = nil;
-    theScanner = [NSScanner scannerWithString:html];
-    while ([theScanner isAtEnd] == NO)
-    {
-        // find start of tag
-        [theScanner scanUpToString:@"<" intoString:NULL] ;
-        // find end of tag
-        [theScanner scanUpToString:@">" intoString:&text] ;
-        // replace the found tag with a space
-        //(you can filter multi-spaces out later if you wish)
-        html = [html stringByReplacingOccurrencesOfString:
-                [NSString stringWithFormat:@"%@>", text]
-                                               withString:@""];
-    } // while //
-    
-    return html;
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -190,23 +225,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 #pragma mark - tableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    DetailViewController *detail = [[DetailViewController alloc]init];
-//    TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
-//    detail.model = model;
-//    [self presentViewController:detail animated:YES completion:nil];
+    TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
+    [[KGModal sharedInstance] replyTweet:model];
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -215,13 +238,41 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     static NSString *myCommentCell = @"comment";
-    TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:myCommentCell];
+    MeCell *cell = [tableView dequeueReusableCellWithIdentifier:myCommentCell];
     if (cell == nil)
     {
-        cell = [[TweetCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myCommentCell];
+        cell = [[MeCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myCommentCell];
+        cell.leftUtilityButtons = [self leftButtons];
+        cell.delegate = self;
     }
+    cell.isDestroy = YES;
+    
+    //[cell addDeleDestroy];
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
+    //NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",model.tid,@"cid", nil];
+    //[cell addDeleAddTarget:self Action:@selector(deleDestroy:) pram:dict isTweet:NO];
+    cell.model = model;
+    [cell addDeleteCommentSuccess:^(BOOL result)
+    {
+        if (result == YES)
+        {
+            NSLog(@"delete this tweet");
+            [_dataArray removeObjectAtIndex:indexPath.row];
+            [_myTableView reloadData];
+        }else
+        {
+            NSLog(@"delefailed");
+        }
+    } failed:^(BOOL ret)
+    {
+        if (ret)
+        {
+            NSLog(@"不删除");
+        }
+    }];
+
     [cell.userInfo sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
     
     cell.tweetLabel.text = model.text;
@@ -299,138 +350,38 @@
     }
     return cell;
 }
--(void)addPic:(NSArray *)subArr toView:(UIScrollView *)myview
-{
-    NSArray *allImages = myview.subviews;
-    for (UIView *subImages in allImages)
-    {
-        if ([subImages isKindOfClass:[XYZImageView class]])
-        {
-            [subImages removeFromSuperview];
-        }
-    }
-    for (int i=0; i<subArr.count; i++)
-    {
-        XYZImageView *imageview = [[XYZImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
-        imageview.userInteractionEnabled  = YES;
-        NSMutableString *bmiddle = [NSMutableString stringWithString:subArr[i]];
-        imageview.strUrl = [bmiddle stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];;
-        //NSLog(@"bmiddle:%@",imageview.strUrl);
-        imageview.contentMode =UIViewContentModeScaleAspectFit;
-        [imageview sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomInAction:)];
-        //imageview.tag = 300+i;
-        [imageview addGestureRecognizer:tap];
-        [myview addSubview:imageview];
-    }
-    
-}
 
-
-//放大圖片
--(void)zoomInAction:(UIGestureRecognizer *)touchtap
+-(NSArray *)leftButtons
 {
-    _coverView.backgroundColor = [UIColor clearColor];
-    [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     
-    if (_coverView == nil)
-    {
-        _coverView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        _coverView.backgroundColor = [UIColor blackColor];
-        UITapGestureRecognizer *tap= [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomOutAction:)];
-        [_coverView addGestureRecognizer:tap];
-        [self.view addSubview:_coverView];
-    }
+//    [leftUtilityButtons sw_addUtilityButtonWithColor:
+//     [UIColor colorWithRed:0.07 green:0.75f blue:0.16f alpha:1.0]
+//                                                icon:[UIImage imageNamed:@"messagescenter_at"]];
+    [leftUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor orangeColor]
+                                                icon:[UIImage imageNamed:@"messagescenter_comments"]];
+    //    [leftUtilityButtons sw_addUtilityButtonWithColor:
+    //     [UIColor colorWithRed:0.55f green:0.27f blue:0.07f alpha:1.0]
+    //                                                icon:[UIImage imageNamed:@"list.png"]];
     
-    if (_fullImageView == nil)
-    {
-        XYZImageView *tapimage = (XYZImageView *)touchtap.view;
-        
-        _fullImageView = [[UIImageView alloc] init];
-        NSLog(@"tapImage:%@",tapimage.strUrl);
-        [_fullImageView sd_setImageWithURL:[NSURL URLWithString:tapimage.strUrl] placeholderImage:tapimage.image];
-        //_fullImageView.image =tapimage.image;
-        _fullImageView.contentMode = UIViewContentModeScaleAspectFit;
-        _fullImageView.userInteractionEnabled = YES;
-        [_coverView addSubview:_fullImageView];
-    }
-    
-    [UIView animateWithDuration:0.3f animations:^{
-        _fullImageView.frame = [UIScreen mainScreen].bounds;
-        
-    }completion:^(BOOL finished)
-     {
-         _coverView.backgroundColor = [UIColor blackColor];
-     }];
-    
-    
+    return leftUtilityButtons;
 }
-
-//縮小圖片
--(void)zoomOutAction:(UITapGestureRecognizer *)tap
+-(void)deleDestroy
 {
-    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    _coverView.backgroundColor = [UIColor clearColor];
-    [UIView animateWithDuration:0.3f animations:^{
-        CGRect frame = CGRectZero;
-        _fullImageView.frame = frame;
-    }completion:^(BOOL finished)
-     {
-         [_coverView removeFromSuperview];
-         _coverView = nil;
-         _fullImageView =nil;
-         
-     }];
-    
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
-    NSInteger count = model.pic_urls.count;
-    if (count >0)
+    DXAlertView *alert = [[DXAlertView alloc]initWithTitle:@"确定删除评论?" contentText:nil leftButtonTitle:@"删除" rightButtonTitle:@"取消"];
+    [alert show];
+    alert.leftBlock = ^()
     {
-        int customHeight = 55+model.size.height+10+40+80+10;
-        return customHeight;
-    }else if(model.model.size.height>0)
-    {
-        if (model.model.pic_urls.count>0)
-        {
-            return 55+model.size.height+10+40+10+model.model.size.height+10+80+20;
-        }else
-            return 55+model.size.height+10+40+10+model.model.size.height+10;
-    }else
-    {
-        return 55+model.size.height+10+40;
-    }
+        NSLog(@"left button clicked");
+    };
+    alert.rightBlock = ^() {
+        NSLog(@"right button clicked");
+    };
 }
 
 
 
-#pragma mark - MJRefreshBaseViewDelegate
-// 开始进入刷新状态就会调用
-- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
-{
-    if ([refreshView isKindOfClass:[header class]])
-    {
-        NSLog(@"下拉刷新");
-        currentPage = 1;
-        [_myTableView setContentOffset:CGPointMake(0, 0) animated:YES];
-    }else if([refreshView isKindOfClass:[footer class]])
-    {
-        NSLog(@"上拉加载");
-        currentPage ++;
-    }
-    [self getJSON:currentPage andUrl:currentURL];
-}
-// 刷新完毕就会调用
-- (void)refreshViewEndRefreshing:(MJRefreshBaseView *)refreshView
-{
-    
-}
-// 刷新状态变更就会调用
-- (void)refreshView:(MJRefreshBaseView *)refreshView stateChange:(MJRefreshState)state
-{
-    
-}
+
 
 @end

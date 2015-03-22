@@ -7,25 +7,10 @@
 //
 
 #import "FavListViewController.h"
-#import "UIImageView+WebCache.h"
-#import "UIButton+WebCache.h"
-#import "AFNetworking.h"
-#import "TweetModel.h"
-#import "DetailViewController.h"
-#import "TweetCell.h"
-#import "XYZImageView.h"
+
 
 @interface FavListViewController ()
-{
-    UITableView *_myTableView;
-    MJRefreshHeaderView *header;
-    MJRefreshFooterView *footer;
-    NSMutableArray *_dataArray;
-    NSString *currentURL;
-    UIImageView *_fullImageView;
-    UIScrollView *_coverView;
-    NSUInteger currentPage;
-}
+
 @end
 
 @implementation FavListViewController
@@ -35,22 +20,37 @@
     [super viewDidLoad];
     currentPage = 1;
     currentURL = kURLFavorites;
-    _dataArray = [[NSMutableArray alloc]init];
     self.title = @"我的收藏";
-    _myTableView = [[UITableView alloc]initWithFrame:self.view.bounds];
-    _myTableView.delegate = self;
-    _myTableView.dataSource = self;
-    [self.view addSubview:_myTableView];
-    header = [[MJRefreshHeaderView alloc]initWithScrollView:_myTableView];
-    footer = [[MJRefreshFooterView alloc]initWithScrollView:_myTableView];
-    header.delegate = self;
-    footer.delegate = self;
-    
+
     [self getJSON:1 andUrl:currentURL];
     // Do any additional setup after loading the view.
 }
+-(void)loadNewData
+{
+    if (!self.isPost)
+    {
+        self.isPost = YES;
+        NSLog(@"下拉刷新");
+        currentPage = 1;
+        [_myTableView setContentOffset:CGPointMake(0, 0) animated:YES];
+        [self getJSON:currentPage andUrl:currentURL];
+        self.isPost = NO;
+    }
+    
+}
+-(void)loadMoreData
+{
+    if (!self.isPost)
+    {
+        self.isPost = YES;
+        currentPage ++;
+        [self getJSON:currentPage andUrl:currentURL];
+        self.isPost = NO;
+    }
+}
 -(void)getJSON:(int)page andUrl:(NSString *)url
 {
+    
     NSDictionary *dict;
     dict = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",[NSString stringWithFormat:@"%d",page],@"page", nil];
     //NSLog(@"dict:%@",dict);
@@ -147,34 +147,14 @@
          //NSLog(@"success:%@",responseObject);
          
          [_myTableView reloadData];
-         [header endRefreshing];
-         [footer endRefreshing];
+         [_myTableView.header endRefreshing];
+         [_myTableView.footer endRefreshing];
+
      } failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
          NSLog(@"error:%@",error.localizedDescription);
      }];
     
-}
-
--(NSString *)flattenHTML:(NSString *)html
-{
-    NSScanner *theScanner;
-    NSString *text = nil;
-    theScanner = [NSScanner scannerWithString:html];
-    while ([theScanner isAtEnd] == NO)
-    {
-        // find start of tag
-        [theScanner scanUpToString:@"<" intoString:NULL] ;
-        // find end of tag
-        [theScanner scanUpToString:@">" intoString:&text] ;
-        // replace the found tag with a space
-        //(you can filter multi-spaces out later if you wish)
-        html = [html stringByReplacingOccurrencesOfString:
-                [NSString stringWithFormat:@"%@>", text]
-                                               withString:@""];
-    } // while //
-    
-    return html;
 }
 
 - (void)didReceiveMemoryWarning
@@ -183,16 +163,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+
 #pragma mark - tableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -208,11 +179,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     static NSString *myFavCell = @"fav";
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:myFavCell];
     if (cell == nil)
     {
         cell = [[TweetCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myFavCell];
+        cell.leftUtilityButtons = [self leftButtons];
+        cell.rightUtilityButtons = [self rightDeleteButtons];
+        cell.delegate = self;
     }
     TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
     [cell.userInfo sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
@@ -291,137 +266,84 @@
     }
     return cell;
 }
--(void)addPic:(NSArray *)subArr toView:(UIScrollView *)myview
+
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
 {
-    NSArray *allImages = myview.subviews;
-    for (UIView *subImages in allImages)
-    {
-        if ([subImages isKindOfClass:[XYZImageView class]])
+    NSIndexPath *indexpath = [_myTableView indexPathForCell:cell];
+    TweetModel *getModel = [_dataArray objectAtIndex:indexpath.row];
+    DetailViewController *detail = [[DetailViewController alloc]init];
+    switch (index) {
+        case 0:
         {
-            [subImages removeFromSuperview];
+            detail.model = getModel;
+            [self presentViewController:detail animated:YES completion:nil];
+            break;
         }
-    }
-    for (int i=0; i<subArr.count; i++)
-    {
-        XYZImageView *imageview = [[XYZImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
-        imageview.userInteractionEnabled  = YES;
-        NSMutableString *bmiddle = [NSMutableString stringWithString:subArr[i]];
-        imageview.strUrl = [bmiddle stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];;
-        //NSLog(@"bmiddle:%@",imageview.strUrl);
-        imageview.contentMode =UIViewContentModeScaleAspectFit;
-        [imageview sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomInAction:)];
-        //imageview.tag = 300+i;
-        [imageview addGestureRecognizer:tap];
-        [myview addSubview:imageview];
-    }
-    
-}
-
-
-//放大圖片
--(void)zoomInAction:(UIGestureRecognizer *)touchtap
-{
-    _coverView.backgroundColor = [UIColor clearColor];
-    [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    
-    if (_coverView == nil)
-    {
-        _coverView = [[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        _coverView.backgroundColor = [UIColor blackColor];
-        UITapGestureRecognizer *tap= [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(zoomOutAction:)];
-        [_coverView addGestureRecognizer:tap];
-        [self.view addSubview:_coverView];
-    }
-    
-    if (_fullImageView == nil)
-    {
-        XYZImageView *tapimage = (XYZImageView *)touchtap.view;
-        
-        _fullImageView = [[UIImageView alloc] init];
-        NSLog(@"tapImage:%@",tapimage.strUrl);
-        [_fullImageView sd_setImageWithURL:[NSURL URLWithString:tapimage.strUrl] placeholderImage:tapimage.image];
-        //_fullImageView.image =tapimage.image;
-        _fullImageView.contentMode = UIViewContentModeScaleAspectFit;
-        _fullImageView.userInteractionEnabled = YES;
-        [_coverView addSubview:_fullImageView];
-    }
-    
-    [UIView animateWithDuration:0.3f animations:^{
-        _fullImageView.frame = [UIScreen mainScreen].bounds;
-        
-    }completion:^(BOOL finished)
-     {
-         _coverView.backgroundColor = [UIColor blackColor];
-     }];
-    
-    
-}
-
-//縮小圖片
--(void)zoomOutAction:(UITapGestureRecognizer *)tap
-{
-    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    _coverView.backgroundColor = [UIColor clearColor];
-    [UIView animateWithDuration:0.3f animations:^{
-        CGRect frame = CGRectZero;
-        _fullImageView.frame = frame;
-    }completion:^(BOOL finished)
-     {
-         [_coverView removeFromSuperview];
-         _coverView = nil;
-         _fullImageView =nil;
-         
-     }];
-    
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    TweetModel *model = [_dataArray objectAtIndex:indexPath.row];
-    NSInteger count = model.pic_urls.count;
-    if (count >0)
-    {
-        int customHeight = 55+model.size.height+10+80+40+10;
-        return customHeight;
-    }else if(model.model.size.height>0)
-    {
-        if (model.model.pic_urls.count>0)
+        case 1:
         {
-            return 55+model.size.height+10+40+10+model.model.size.height+10+80+20;
-        }else
-            return 55+model.size.height+10+40+10+model.model.size.height+10;
-    }else
-    {
-        return 55+model.size.height+10+40;
+            NSIndexPath *cellIndexPath = [_myTableView indexPathForCell:cell];
+            TweetModel *_getModel = [_dataArray objectAtIndex:cellIndexPath.row];
+            DXAlertView *alert = [[DXAlertView alloc]initWithTitle:@"确认删除吗？" contentText:@"确认删除吗？" leftButtonTitle:@"删除" rightButtonTitle:@"取消"];
+            [alert show];
+            alert.leftBlock = ^()
+            {
+                AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+                NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",_getModel.tid,@"id", nil];
+                [manager POST:kURLFavoritesDestroy parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
+                 {
+                     NSLog(@"delete success:%@",responseObject);
+                     [_dataArray removeObjectAtIndex:cellIndexPath.row];
+                     [_myTableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+                 {
+                     NSLog(@"删除失败:%@",error);
+                 }];
+                
+            };
+            alert.rightBlock = ^() {
+                NSLog(@"取消");
+            };
+
+//            
+//            [self deleteFav:getModel];
+//            NSIndexPath *cellIndexPath = [_myTableView indexPathForCell:cell];
+//            [_dataArray removeObjectAtIndex:cellIndexPath.row];
+//            [_myTableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            break;
+        }
+        default:
+            break;
     }
 }
-
-
-
-#pragma mark - MJRefreshBaseViewDelegate
-// 开始进入刷新状态就会调用
-- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+-(void)deleteFav:(TweetModel *)getmodel
 {
-    if ([refreshView isKindOfClass:[header class]])
-    {
-        NSLog(@"下拉刷新");
-        currentPage = 1;
-        [_myTableView setContentOffset:CGPointMake(0, 0) animated:YES];
-    }else if([refreshView isKindOfClass:[footer class]])
-    {
-        NSLog(@"上拉加载");
-        currentPage ++;
-    }
-    [self getJSON:currentPage andUrl:currentURL];
+    NSLog(@"getModel:%@",getmodel);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",getmodel.tid,@"id", nil];
+    NSLog(@"dict:%@",dict);
+    [manager POST:kURLFavoritesDestroy parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSLog(@"success:%@",responseObject);
+         [ShareToken sendMsg];
+         [JDStatusBarNotification showWithStatus:@"取消收藏成功" dismissAfter:2 styleName:JDStatusBarStyleSuccess];
+     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@"failed:%@",error);
+         [JDStatusBarNotification showWithStatus:@"取消收藏失败" dismissAfter:2 styleName:JDStatusBarStyleSuccess];
+     }];
 }
-// 刷新完毕就会调用
-- (void)refreshViewEndRefreshing:(MJRefreshBaseView *)refreshView
+- (NSArray *)leftButtons
 {
+    NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     
+    [leftUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:0.07 green:0.75f blue:0.16f alpha:1.0]
+                                                icon:[UIImage imageNamed:@"messagescenter_at"]];
+    [leftUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor orangeColor]
+                                                icon:[UIImage imageNamed:@"messagescenter_comments"]];
+    return leftUtilityButtons;
 }
-// 刷新状态变更就会调用
-- (void)refreshView:(MJRefreshBaseView *)refreshView stateChange:(MJRefreshState)state
-{
-    
-}
+
+
 @end

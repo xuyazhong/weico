@@ -15,8 +15,9 @@
 #import "DetailCommentCell.h"
 #import "DetailRepostCell.h"
 #import "UIImageView+WebCache.h"
-#import "RepostViewController.h"
-#import "CommentViewController.h"
+#import "KGModal.h"
+#import "ZoomImageView.h"
+
 
 
 @interface DetailViewController ()
@@ -35,10 +36,19 @@
 @end
 
 @implementation DetailViewController
-
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"begin");
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     _dataArray = [[NSMutableArray alloc]init];
     _data1 = [[NSMutableArray alloc]init];
@@ -47,6 +57,12 @@
     [_dataArray addObject:_data1];
     [_dataArray addObject:_data2];
     [_dataArray addObject:_data3];
+    
+    
+    
+    
+    // Make views for the navigation bar
+
     
     myscrollview = [[UIScrollView alloc]initWithFrame:CGRectMake(0,104,[DeviceManager currentScreenSize].width, [DeviceManager currentScreenSize].height-114)];
     myscrollview.contentSize = CGSizeMake(320*3, 0);
@@ -76,6 +92,29 @@
     [self loadTableView1];
     [self loadTableView2];
     [self loadTableView3];
+    
+
+
+}
+-(UIColor *)gradient:(double)percent top:(double)topX bottom:(double)bottomX init:(UIColor*)init goal:(UIColor*)goal{
+    double t = (percent - bottomX) / (topX - bottomX);
+    
+    t = MAX(0.0, MIN(t, 1.0));
+    
+    const CGFloat *cgInit = CGColorGetComponents(init.CGColor);
+    const CGFloat *cgGoal = CGColorGetComponents(goal.CGColor);
+    
+    double r = cgInit[0] + t * (cgGoal[0] - cgInit[0]);
+    double g = cgInit[1] + t * (cgGoal[1] - cgInit[1]);
+    double b = cgInit[2] + t * (cgGoal[2] - cgInit[2]);
+    
+    return [UIColor colorWithRed:r green:g blue:b alpha:1];
+}
+
+-(UIView*)viewWithBackground:(UIColor *)color{
+    UIView *v = [UIView new];
+    v.backgroundColor = color;
+    return v;
 }
 -(void)loadTableView1
 {
@@ -86,7 +125,7 @@
         NSLog(@"dict:%@",dict);
         [manager GET:kURLRepostList parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject)
          {
-             
+             //NSLog(@"respost:%@",responseObject);
              NSArray *subArr = [responseObject objectForKey:@"reposts"];
              //NSLog(@"reposts subArr:%@",subArr);
              for (NSDictionary *subDict in subArr)
@@ -103,7 +142,7 @@
                  model.user = user;
                  [_data1 addObject:model];
              }
-             NSLog(@"_data1:%@",_data1);
+             //NSLog(@"_data1:%@",_data1);
              //[myJSON setDictionary:responseObject];
              [mytableview1 reloadData];
          } failure:^(AFHTTPRequestOperation *operation, NSError *error)
@@ -336,17 +375,19 @@
 }
 -(void)repostAction
 {
-    RepostViewController *repost = [[RepostViewController alloc]init];
-    repost.model = _model;
-    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:repost];
-    [self presentViewController:nvc animated:YES completion:nil];
+    [[KGModal sharedInstance] repostTweet:_model];
+//    RepostViewController *repost = [[RepostViewController alloc]init];
+//    repost.model = _model;
+//    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:repost];
+//    [self presentViewController:nvc animated:YES completion:nil];
 }
 -(void)commentAction
 {
-    CommentViewController *comment = [[CommentViewController alloc]init];
-    comment.model = _model;
-    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:comment];
-    [self presentViewController:nvc animated:YES completion:nil];
+    [[KGModal sharedInstance] commentTweet:_model];
+//    CommentViewController *comment = [[CommentViewController alloc]init];
+//    comment.model = _model;
+//    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:comment];
+//    [self presentViewController:nvc animated:YES completion:nil];
 }
 -(void)cancelAction
 {
@@ -374,6 +415,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     NSLog(@"mytableviewtag:%d",tableView.tag);
     if (tableView.tag == 201)
     {
@@ -411,12 +453,10 @@
             cell.createTime.text = model.created_at;
             cell.tweetContent.text = model.text;
         }
-        
         return cell;
     }else if(tableView.tag == 203)
     {
         NSLog(@"微博");
-        
         return [self getMytableView3:mytableview3];
     }
     else
@@ -424,8 +464,6 @@
         NSLog(@"nil return");
         return nil;
     }
-    
-    
 }
 -(UITableViewCell *)getMytableView3:(UITableView *)tableView
 {
@@ -438,9 +476,9 @@
     TweetModel *model = [self model];
     [cell.userInfo sd_setImageWithURL:[NSURL URLWithString:model.user.profile_image_url]];
     cell.tweetLabel.text = model.text;
-    cell.tweetLabel.font = [UIFont systemFontOfSize:16];
-    cell.tweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    cell.tweetLabel.numberOfLines = 0;
+    //cell.tweetLabel.font = [UIFont systemFontOfSize:16];
+    //cell.tweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    //cell.tweetLabel.numberOfLines = 0;
     cell.tweetLabel.frame = CGRectMake(10, 70, model.size.width, model.size.height);
     cell.nickName.text = model.user.name;
     cell.timeLabel.text = model.created_at;
@@ -470,9 +508,9 @@
         cell.retweetLabel.hidden = NO;
         cell.retweetLabel.text = model.model.text;
         NSLog(@"text:%@",model.model.text);
-        cell.retweetLabel.font = [UIFont systemFontOfSize:16];
-        cell.retweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
-        cell.retweetLabel.numberOfLines = 0;
+        //cell.retweetLabel.font = [UIFont systemFontOfSize:16];
+        //cell.retweetLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        //cell.retweetLabel.numberOfLines = 0;
         
         if (model.model.pic_urls.count>0)
         {
@@ -540,14 +578,37 @@
     
      */
 }
+//-(void)addPic:(NSArray *)subArr toView:(UIScrollView *)myview
+//{
+//    for (int i=0; i<subArr.count; i++)
+//    {
+//        UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
+//        [image sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
+//        [myview addSubview:image];
+//    }
+//}
 -(void)addPic:(NSArray *)subArr toView:(UIScrollView *)myview
 {
+    NSArray *allImages = myview.subviews;
+    for (UIView *subImages in allImages)
+    {
+        if ([subImages isKindOfClass:[ZoomImageView class]])
+        {
+            [subImages removeFromSuperview];
+        }
+    }
     for (int i=0; i<subArr.count; i++)
     {
-        UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(85*i, 0, 80, 80)];
-        [image sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
-        [myview addSubview:image];
+        ZoomImageView *_imageView=[[ZoomImageView alloc] initWithFrame:CGRectMake(85*i, 0, 80, 80)];
+        //UIViewContentModeScaleAspectFit 顯示圖片的原始比例,自適應
+        //_imageView.contentMode =UIViewContentModeScaleAspectFit;
+        _imageView.backgroundColor=[UIColor clearColor];
+        NSMutableString *bmiddle = [NSMutableString stringWithString:subArr[i]];
+        [_imageView sd_setImageWithURL:[NSURL URLWithString:subArr[i]]];
+        [_imageView addZoom:[bmiddle stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"]];
+        [myview addSubview:_imageView];
     }
+    
 }
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {

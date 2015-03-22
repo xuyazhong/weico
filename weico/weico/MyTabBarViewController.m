@@ -13,12 +13,12 @@
 #import "FavListViewController.h"
 #import "MeViewController.h"
 #import "DeviceManager.h"
-#import "NetManager.h"
 #import "ShareToken.h"
 #import "AFNetworking.h"
 #import "UIImageView+WebCache.h"
 #import "UIButton+WebCache.h"
-
+#import "KGModal.h"
+#import "AppDelegate.h"
 
 @interface MyTabBarViewController ()
 {
@@ -41,7 +41,14 @@
     }
     return self;
 }
-
+-(void)setViewHidden
+{
+    customTabBar.hidden = YES;
+}
+-(void)setviewShow
+{
+    customTabBar.hidden = NO;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -53,7 +60,6 @@
 }
 -(void)getJSON
 {
-    
     NSDictionary *info = [ShareToken readUserInfo];
     NSString *uid = [info objectForKey:@"uid"];
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[ShareToken readToken],@"access_token",uid,@"uid", nil];
@@ -61,10 +67,9 @@
     [manager GET:kURLShowMe parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
         //NSLog(@"success:%@",responseObject);
-
         currentHeadImage = [responseObject objectForKey:@"profile_image_url"];
         [head sd_setImageWithURL:[NSURL URLWithString:currentHeadImage]];
-//        [headBtn sd_setImageWithURL:[NSURL URLWithString:currentHeadImage] forState:UIControlStateNormal];
+        //[headBtn sd_setImageWithURL:[NSURL URLWithString:currentHeadImage] forState:UIControlStateNormal];
         NSLog(@"head:%@",currentHeadImage);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
     {
@@ -119,11 +124,13 @@
             UIImageView *headBtn = [[UIImageView alloc]initWithFrame:CGRectMake(10+btnWidth*i, 0, 45, 45)];
 //            [headBtn setBackgroundImage:[UIImage imageNamed:norArr[i]] forState:UIControlStateNormal];
             [headBtn setImage:[UIImage imageNamed:norArr[i]]];
-            headBtn.tag = 100+i;
+            headBtn.tag = 500+i;
             headBtn.userInteractionEnabled = YES;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
             [headBtn addGestureRecognizer:tap];
-            //[headBtn addTarget:self action:@selector(btnClickAction:) forControlEvents:UIControlEventTouchUpInside];
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressAction)];
+            [headBtn addGestureRecognizer:longPress];
+            
             [customTabBar addSubview:headBtn];
         }
         else
@@ -131,7 +138,7 @@
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.frame = CGRectMake(10+btnWidth*i, 0, 45, 45);
             //btn.tintColor = [UIColor orangeColor];
-            btn.tag = 100+i;
+            btn.tag = 500+i;
             if (i==2)
             {
                 btn.selected = YES;
@@ -143,20 +150,23 @@
             [btn setImage:[UIImage imageNamed:norArr[i]] forState:UIControlStateNormal];
             [customTabBar addSubview:btn];
         }
-        
-        //[btn setImage:[UIImage imageNamed:selArr[i]] forState:UIControlStateSelected];
-        
+
         
     }
     [self.view addSubview:customTabBar];
     self.selectedIndex = 2;
 
 }
+-(void)longPressAction
+{
+    [[KGModal sharedInstance] updateTweet];
+    //[[KGModal sharedInstance] updateTweet];
+}
 -(void)tapAction:(UITapGestureRecognizer *)tap
 {
     for (int i=0; i<4; i++)
     {
-        UIButton *mybtn = (UIButton *)[self.view viewWithTag:100+i];
+        UIButton *mybtn = (UIButton *)[self.view viewWithTag:500+i];
         mybtn.selected = NO;
     }
     UIImageView *img = (UIImageView *)tap.view;
@@ -170,11 +180,11 @@
 {
     for (int i=0; i<4; i++)
     {
-        UIButton *mybtn = (UIButton *)[self.view viewWithTag:100+i];
+        UIButton *mybtn = (UIButton *)[self.view viewWithTag:500+i];
         mybtn.selected = NO;
     }
     btn.selected = YES;
-    self.selectedIndex = btn.tag-100;
+    self.selectedIndex = btn.tag-500;
     CGRect frame = selectLabel.frame;
     frame.origin.x = btn.frame.origin.x+btnWidth/2-10;
     selectLabel.frame = frame;
@@ -185,19 +195,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
--(void)setHidden
-{
-    customTabBar.hidden = YES;
-}
 
 @end
